@@ -1,0 +1,14 @@
+{
+  "tests": [
+    {
+      "name": "Check for at least one test",
+      "setup": "",
+      "run": "mvn -q -B package --file pom.xml andy:run",
+      "input": "",
+      "output": "1/1 passed",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 50
+    }
+  ]
+}
