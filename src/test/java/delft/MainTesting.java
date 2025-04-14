@@ -22,6 +22,7 @@ class MainTesting {
         System.setIn(originalIn);
     }
 
+    // Unit Test
     // test for invalid input on main menu
     @Test
     void testInvalidInputHandling() {
@@ -34,6 +35,7 @@ class MainTesting {
         assertThat(output).contains("Invalid option. Please try again.");
     }
 
+    // Unit Test
     // Test the user adds a book
     // Also test the catalog function
     @Test
@@ -56,7 +58,7 @@ class MainTesting {
         assertThat(output).contains("Dinosaurs (ID: 40)");
     }
 
-    // Test remove book
+    // Unit Test
     @Test
     void testRemoveBookFunction() {
         // user input
@@ -76,7 +78,7 @@ class MainTesting {
         assertThat(output).doesNotContain("Book 2 (ID: 2)");
     }
 
-    // test empty library
+    // Unit Test
     @Test
     void testEmptyLibraryScenario() {
         String simulatedInput = "9\n2\n9\n1\n4\n0\n"; // View catalog in an empty library, then exit
@@ -88,7 +90,7 @@ class MainTesting {
         assertThat(output).contains("Books in Library:").doesNotContain("Book 1 (ID: 1)");
     }
 
-    // test removing non-existent book
+    // Unit Test
     @Test
     void testRemovingNonExistentBook() {
         String simulatedInput = "9\n99\n4\n0\n"; // Attempt to remove a non-existent book, then exit
@@ -100,7 +102,7 @@ class MainTesting {
         assertThat(output).contains("Book not found.");
     }
 
-    // testing exiting the program
+    // Unit Test
     @Test
     void testExitProgram() {
         String simulatedInput = "0\n"; // Exit immediately
@@ -112,6 +114,7 @@ class MainTesting {
         assertThat(output).contains("Exiting Library Management CLI.");
     }
 
+    // Unit Test
     @Test
     void testingGetBookInfo() {
         // user input
@@ -134,6 +137,7 @@ class MainTesting {
         assertThat(output).contains("7. Is Book Available: true");
     }
     
+    // Unit Test
     @Test
     void testingListAllMembers() {
         // user input
@@ -153,7 +157,8 @@ class MainTesting {
         assertThat(output).contains("ID: 1");
         assertThat(output).contains("Book 1 ID: 1");
     }
-
+    
+    // Unit Test
     @Test
     void testingReturnBook() {
         // user input
@@ -171,6 +176,7 @@ class MainTesting {
         assertThat(output).contains("Book: Book 1 returned successfully by: Jacob");
     }
 
+    // Unit Test
     @Test
     void testingReturnBookNotAvailable() {
         // user input
@@ -188,6 +194,7 @@ class MainTesting {
         assertThat(output).contains("Book not found.");
     }
 
+    // Unit Test
     @Test
     void testingCheckingOutWithBook() {
         // user input
@@ -207,6 +214,7 @@ class MainTesting {
         assertThat(output).doesNotContain("Book not found.");
     }
 
+    // Unit Test
     @Test
     void testingCheckingOutWithoutBook() {
         // user input
@@ -225,6 +233,7 @@ class MainTesting {
         assertThat(output).doesNotContain("ID: 345");
     }
 
+    // Unit Test
     @Test
     void testingAddMember() {
         // user input
@@ -243,6 +252,7 @@ class MainTesting {
         
     }
 
+    // Unit Test
     @Test
     void testingRemoveMember() {
         // user input

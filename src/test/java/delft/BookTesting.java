@@ -16,6 +16,7 @@ class BookTest {
         book = new Book("Brandon", "John Doe", 2008, "012345678", 0, true, "Testing");
     }
 
+    // Unit Test
     @Test
     // Testing the availability of a book
     void testingAvailability() {
@@ -24,6 +25,7 @@ class BookTest {
         assertFalse(book.checkAvailability());
     }
 
+    // Specfication
     @Test
     // Simulating User Input and ensuring the fields are updated
     void testUpdateBookInfo() {
@@ -51,6 +53,8 @@ class BookTest {
         assertFalse(book.checkAvailability());
     }
 
+
+    // Specification
     @Test
 
     // Testing when a user provides an integer value below the threshold
@@ -63,6 +67,8 @@ class BookTest {
         System.setIn(originalSystemIn);
     }
 
+
+    // Specification
     @Test
     // Testing when a user provides an integer value above the threshold
     void testingUserInsertsAboveMaximum() {
@@ -74,6 +80,7 @@ class BookTest {
         System.setIn(originalSystemIn);
     }
 
+    // Unit
     @Test
     // Testing when a user updates the author field
     void testUpdateAuthor() {
@@ -90,6 +97,7 @@ class BookTest {
         System.setIn(originalSystemIn);
     }
 
+    // Unit
     @Test
     // Testing when a user updates the genre field
     void testUpdateGenre() {
@@ -106,6 +114,7 @@ class BookTest {
         System.setIn(originalSystemIn);
     }
 
+    // Unit
     @Test
     // Testing when a user updates the isbn field
     void testUpdateISBN() {
@@ -122,6 +131,8 @@ class BookTest {
         System.setIn(originalSystemIn);
     }
 
+
+    // Unit
     @Test
     // Testing when a user updates the bookID field
     void testUpdateBookID() {
@@ -138,6 +149,7 @@ class BookTest {
         System.setIn(originalSystemIn);
     }
 
+    // Structural 
     @Test
     // Testing that the book correctly displays the desired format and correct book
     void testingGetBookInfo() {
@@ -162,6 +174,8 @@ class BookTest {
         assertThat(output).contains(Boolean.toString(book.checkAvailability()));
     }
 
+
+    // Specification
     @Test
     // Testing Invalid fields when creating a book
     void testInvalidBookFields() {

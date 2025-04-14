@@ -79,12 +79,6 @@ class MemberTesting {
 
         //the member instance i will use
 
-
-
-
-
-
-
     }
 }
 
