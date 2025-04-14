@@ -18,7 +18,6 @@ public class Member {
         this.borrowedBooks = borrowedBooks;
     }
 
-    //Mocking Verifying string
     public void printMemberInfo(){
         System.out.println("____________________________");
         System.out.println("Name: " + this.name);
@@ -32,12 +31,10 @@ public class Member {
 
     }
 
-    // Specification (Unit Test)
     public List<Book> getborrowedBookList(){
         return this.borrowedBooks;
     }
 
-    // Stub (Adding the dummy list)
     public void addBorrowedBook(Book book){
         System.out.println();
         if(book.isAvailable == false){
@@ -51,7 +48,6 @@ public class Member {
         }
     }
 
-    // Mock (Verifying user input)
     public void updateMemberInfo(int option, String change){
         if(option == 1){
             this.name = change;
@@ -64,7 +60,6 @@ public class Member {
         }
     }
 
-    // Stub (Adding the dummy list) and testing if the book is available
     public void removedBorrowedBook(int bookID){
         for(int i = 0; i < borrowedBooks.size(); i++){
             Book booker = borrowedBooks.get(i);

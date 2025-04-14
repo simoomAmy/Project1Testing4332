@@ -47,14 +47,10 @@ public class Book {
         this.genre = genre;
     }
 
-
-    // Specification (Unit Test)
     public boolean checkAvailability() {
         return this.isAvailable;
     }
 
-
-    // Mocking: Verifying changed field 
     public void updateBookInfo(){
         Scanner scan = new Scanner(System.in);
         boolean running = true;
@@ -113,7 +109,6 @@ public class Book {
         scan.close();
     }
 
-    // Mock: Verify 
     public void getBookInfo(){
         String info = String.format(
                 "1. Name: %s\n" +
@@ -135,7 +130,6 @@ public class Book {
     }
     
 
-    // Specification
     public String updateField(Scanner scan, String option, String prev){
         Main.clearScreen();
         System.out.printf("Updating %s%n", option);

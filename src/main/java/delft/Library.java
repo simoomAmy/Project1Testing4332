@@ -23,7 +23,7 @@ public class Library {
         this.members = members;
     }
 
-    // Stub (Verify after book is added)
+
     public void addBook(Book newBook)
     {
         // Makes a new book object for the book that is being added
@@ -36,7 +36,7 @@ public class Library {
         availableBookIds.add(newBook.bookID);
     }
 
-    // Stub (Verify after book is added)
+
     public void removeBook(Book book) {
         // When the library removes a book, we want to remove it from the allBooks list:
         allBooks.remove(book);
@@ -55,7 +55,7 @@ public class Library {
 
     }
 
-    // Stub (Verify after book is added)
+
     public void checkoutBook(Member member, int bookID) {
         for(Book book : allBooks){
             if(bookID == book.bookID){
@@ -70,7 +70,7 @@ public class Library {
 
     }
 
-    // Stub (Verify after book is added)
+
     public void addMember(Member member)
     {
         // Makes a new member object for the member that is being added
@@ -102,7 +102,7 @@ public class Library {
         }
     }
 
-    // Unit (Specification)
+
     public String whoHasBook(String bookName)
     {
         // Check whether if the book is in the loaned list
@@ -120,14 +120,11 @@ public class Library {
 
     }
 
-    // Unit (Specification)
     public List<Member> getAllMembers()
     {
         return this.members;
     }
-
-
-    // Unit (Specification)
+    
     public int findBookIdByName(String bookName)
     {
         for (Book book : allBooks)
@@ -140,7 +137,6 @@ public class Library {
         return -1; // Book not found
     }
 
-    // Stub or Mock
     public void returnBook(Member member, Book book){
         book.isAvailable = true;
         for(int x = 0; x < loanedBookIds.size();x++){
@@ -150,10 +146,7 @@ public class Library {
             }
         }
 
-
         availableBookIds.add(book.bookID);
         member.removedBorrowedBook(book.bookID);
     }
-
-
 }
