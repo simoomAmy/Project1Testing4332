@@ -79,6 +79,7 @@ public class TestLibrary
     }
 
 //Stubbing to see if the member is removed from the list
+//Error 
     @Test
     public void testRevokeMember()
     {
@@ -99,6 +100,7 @@ public class TestLibrary
     }
 
     // Unit (Specification) Checking if the book is available and show the member who has it
+    // Error
     @Test
     public void testWhoHasBook()
     {
@@ -112,6 +114,7 @@ public class TestLibrary
     }
 
     // Unit (Specification) Gives the list of all the members in the library
+    // Error
     @Test
     public void testGetAllMembers()
     {
@@ -135,6 +138,7 @@ public class TestLibrary
     }
 
     // Stubbing to see if the book is returned and removed from the loaned list
+    // Error 
     @Test
     public void testReturnBook()
     {
