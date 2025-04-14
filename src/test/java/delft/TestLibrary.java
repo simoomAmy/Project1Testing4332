@@ -61,7 +61,7 @@ public class TestLibrary
     @Test
     public void testCheckoutBook()
     {
-        
+
 
     }
 
@@ -79,11 +79,12 @@ public class TestLibrary
     }
 
 //Stubbing to see if the member is removed from the list
-//Error 
+//Error
     @Test
     public void testRevokeMember()
     {
-        Member member1 = new Member("John", "john@gmail.com", 1, "Book1");
+        Book book = new Book("Book1", "Author", 2025, "1234567890", 1, false, "Fiction");
+        Member member1 = new Member("Member", "Member@gmail.com", 1, new ArrayList<>(List.of(book)));
         members.add(member1);
         library.revokeMembership(member1);
         assertEquals(0, members.size());
@@ -107,10 +108,10 @@ public class TestLibrary
         Book book = new Book("Book", "Author", 2025, "1234567890", 1, true, "Fiction");
         allBooks.add(book);
         loanedBookIds.add(book.bookID);
-        
+
         String result = library.whoHasBook("Book");
         assertEquals("Book", result);
-        
+
     }
 
     // Unit (Specification) Gives the list of all the members in the library
@@ -118,7 +119,8 @@ public class TestLibrary
     @Test
     public void testGetAllMembers()
     {
-        Member member1 = new Member("Member", "Member@gmail.com", 1, "Book1");
+        Book book = new Book("Book1", "Author", 2025, "1234567890", 1, false, "Fiction");
+        Member member1 = new Member("Member", "Member@gmail.com", 1, new ArrayList<>(List.of(book)));
         members.add(member1);
 
         List<Member> result = library.getAllMembers();
@@ -138,12 +140,12 @@ public class TestLibrary
     }
 
     // Stubbing to see if the book is returned and removed from the loaned list
-    // Error 
+    // Error
     @Test
     public void testReturnBook()
     {
         Book book = new Book("Book1", "Author", 2025, "1234567890", 1, false, "Fiction");
-        Member member = new Member("Member", "Member@gmail.com", 1, String.valueOf(new ArrayList<>(List.of(book))));
+        Member member = new Member("Member", "Member@gmail.com", 1,new ArrayList<>(List.of(book)));
 
         // Add to collections
         allBooks.add(book);
