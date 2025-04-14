@@ -41,6 +41,8 @@ public class Main {
         
         boolean running = true;
         while (running) {
+
+            // display menu for CLI
             System.out.println("=== Library Management CLI ===");
             System.out.println("1. Find Book Information");
             System.out.println("2. Checkout Book");
@@ -55,16 +57,17 @@ public class Main {
             System.out.println("0. Exit");
             System.out.print("Select an option: ");
         
+            // input reader switcher
             String input = scanner.nextLine();
             switch (input) {
                 case "0":
                     running = false;
                     break;
+
                 case "1": // Find Book Information
                     System.out.print("Enter book name to find: ");
                     String bookNameToFind = scanner.nextLine();
                     int bookIdToFind = library.findBookIdByName(bookNameToFind);
-                    String bookOwner = library.whoHasBook(bookNameToFind);
                     if (bookIdToFind != -1) {
                         for (Book book : allBooks) {
                             if (book.bookID == bookIdToFind) {
@@ -76,26 +79,36 @@ public class Main {
                         System.out.println("Book not found.");
                     }
                     break;
+
                 case "2": // Checkout Book
                     System.out.print("Enter member ID: ");
                     int memberIdCheckout = Integer.parseInt(scanner.nextLine());
                     Member checkoutMember = null;
+                    
+                    // search for member in member id 
                     for (Member m : members) {
                         if (m.memberId == memberIdCheckout) {
                             checkoutMember = m;
                             break;
                         }
                     }
+                    // if the member exist search for book id in allBooks list 
                     if (checkoutMember != null) {
                         System.out.print("Enter book ID to checkout: ");
                         int bookIdToCheckout = Integer.parseInt(scanner.nextLine());
                         Book bookToCheckout = null;
                         for (Book book : allBooks) {
                             if (book.bookID == bookIdToCheckout) {
-                                bookToCheckout = book;
+                                // checks if the book is available
+                                if (book.checkAvailability() == true)
+                                {
+                                    bookToCheckout = book;
+                                }
                                 break;
                             }
                         }
+
+                        //if book exist and can be checked out, check it out
                         if (bookToCheckout != null) {
                             library.checkoutBook(checkoutMember, bookToCheckout);
                             clearScreen();
@@ -107,26 +120,31 @@ public class Main {
                         System.out.println("Member not found.");
                     }
                     break;
+
                 case "3": // Return Book
                     System.out.print("Enter member ID: ");
                     int memberIdReturn = Integer.parseInt(scanner.nextLine());
                     Member returnMember = null;
+                    // search for member in members
                     for (Member m : members) {
                         if (m.memberId == memberIdReturn) {
                             returnMember = m;
                             break;
                         }
                     }
+                    // if member is found
                     if (returnMember != null) {
                         System.out.print("Enter book ID to return: ");
                         int bookIdToReturn = Integer.parseInt(scanner.nextLine());
                         Book bookToReturn = null;
+                        // looks through allBooks list
                         for (Book book : allBooks) {
                             if (book.bookID == bookIdToReturn) {
                                 bookToReturn = book;
                                 break;
                             }
                         }
+                        // if book is found
                         if (bookToReturn != null) {
                             library.returnBook(returnMember, bookToReturn);
                             clearScreen();
@@ -138,12 +156,15 @@ public class Main {
                         System.out.println("Member not found.");
                     }
                     break;
+
                 case "4": // Show Full Catalog
                     System.out.println("Books in Library:");
+                    // loop through allBooks list and print out book name and id
                     for (Book book : allBooks) {
                         System.out.println(book.name + " (ID: " + book.bookID + ")");
                     }
                     break;
+
                 case "6": // Add Member
                     System.out.print("Enter member name: ");
                     String memberName = scanner.nextLine();
@@ -156,6 +177,7 @@ public class Main {
                     clearScreen();
                     System.out.println("Member: " + memberName + " added successfully.");
                     break;
+
                 case "7": // Remove Member
                     System.out.print("Enter member ID to remove: ");
                     int memberIdToRemove = Integer.parseInt(scanner.nextLine());
@@ -175,6 +197,7 @@ public class Main {
                         System.out.println("Member not found.");
                     }
                     break;
+
                 case "8": // Add Book
                     System.out.print("Enter book name: ");
                     String name = scanner.nextLine();
@@ -193,16 +216,19 @@ public class Main {
                     clearScreen();
                     System.out.println("Book: " + name + " added successfully.");
                     break;
+
                 case "9": // Remove Book
                     System.out.print("Enter book ID to remove: ");
                     int bookIdToRemove = Integer.parseInt(scanner.nextLine());
                     Book bookToRemove = null;
+                    // if book is found in the allBooks list
                     for (Book book : allBooks) {
                         if (book.bookID == bookIdToRemove) {
                             bookToRemove = book;
                             break;
                         }
                     }
+                    // removes book if found 
                     if (bookToRemove != null) {
                         library.removeBook(bookToRemove);
                         clearScreen();
@@ -211,22 +237,27 @@ public class Main {
                         System.out.println("Book not found.");
                     }
                     break;
+
                 case "10": // List All Members
                     System.out.println("Members in Library:");
+                    // loop throgh the members and prints their info 
                     for (Member m : members) {
                         m.printMemberInfo();
                     }
                     break;
+                    
                 case "11": // Update Book Information
                     System.out.print("Enter book ID to update: ");
                     int bookIdToUpdate = Integer.parseInt(scanner.nextLine());
                     Book bookToUpdate = null;
+                    // looks through allBooks list
                     for (Book book : allBooks) {
                         if (book.bookID == bookIdToUpdate) {
                             bookToUpdate = book;
                             break;
                         }
                     }
+                    // if book is found, update it 
                     if (bookToUpdate != null) {
                         bookToUpdate.updateBookInfo();
                         clearScreen();
