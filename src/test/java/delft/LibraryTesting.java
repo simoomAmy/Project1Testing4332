@@ -1,5 +1,6 @@
 package delft;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 import java.awt.*;
@@ -42,11 +43,8 @@ class LibraryTesting {
 
         memberTester.printMemberInfo();
 
-        System.out.flush();
-        System.setOut(out);
 
-        // Get the output
-        String output = baos.toString();
+
         //test all was outputed as it should have
         assertThat(baos.toString()).contains(name);
         assertThat(baos.toString()).contains(email);
@@ -55,9 +53,13 @@ class LibraryTesting {
             assertThat(baos.toString()).contains(book.name);
         }
 
+        System.out.flush();
+        System.setOut(out);
 
         Book boosk = new Book("title", "author", 200,"ISBN",1234, true,"genre");
         memberTester.addBorrowedBook(boosk);
+        //to ensure it is set to false so no one can check it out
+        assertThat(boosk.isAvailable).isFalse();
         //to ensure the book was added
         assertThat(memberTester.borrowedBooks).contains(boosk);
         //to test if it will add a unavailable book
@@ -65,13 +67,17 @@ class LibraryTesting {
         memberTester.addBorrowedBook(boosk3);
         assertThat(memberTester.borrowedBooks).doesNotContain(boosk3);
 
-
-        memberTester.removedBorrowedBook(123);
+        memberTester.removedBorrowedBook(boosk.bookID);
         assertThat(memberTester.borrowedBooks).doesNotContain(boosk);
 
-        memberTester.removedBorrowedBook(123);
+        assertEquals(memberTester.getborrowedBookList(), borrowedBooks);
 
-
+        memberTester.updateMemberInfo(1,"newName");
+        assertEquals(memberTester.name, "newName");
+        memberTester.updateMemberInfo(2, "newEmail");
+        assertEquals(memberTester.email, "newEmail");
+        memberTester.updateMemberInfo(3, "123678");
+        assertEquals(memberTester.memberId,123678);
 
         //the member instance i will use
 
