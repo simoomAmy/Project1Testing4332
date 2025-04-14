@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Member {
-    private String name;
-    private  String email;
-    private int memberId;
+    public String name;
+    public  String email;
+    public int memberId;
     public List<Book> borrowedBooks;
 
     //added then got rid of getter methods due to my error during testing, I wont be using them.
