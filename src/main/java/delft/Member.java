@@ -3,7 +3,6 @@
 package delft;
 
 import java.util.List;
-import java.util.Scanner;
 
 public class Member {
     public String name;
@@ -43,7 +42,8 @@ public class Member {
         System.out.println();
         if(book.isAvailable == false){
             System.out.println("Book is not available and cannot add it to borrowed books");
-        }else if(book.isAvailable == true){
+        }
+        if(book.isAvailable == true){
             System.out.println("Book has been added to borrowed books");
             book.isAvailable = false;
             this.borrowedBooks.add(book);
@@ -52,33 +52,25 @@ public class Member {
     }
 
     // Mock (Verifying user input)
-    public void updateMemberInfo(){
-        System.out.println("Please select a field to update");
-        System.out.println("1. Name: " + this.name);
-        System.out.println("2. Email: " + this.email);
-        System.out.println("3. ID: " + this.memberId);
+    public void updateMemberInfo(int option, String change){
+        if(option == 1){
+            this.name = change;
+        }else if(option == 2){
+            this.email = change;
 
-        Scanner scanner = new Scanner(System.in);
-        switch(scanner.nextInt()){
-            case 1:
-                this.name = scanner.nextLine();
-                System.out.println("Name Updated To: " + this.name);
-            case 2:
-                this.email = scanner.nextLine();
-                System.out.println("Email Updated To: " + this.email);
-            case 3:
-                this.memberId = scanner.nextInt();
-                System.out.println("ID Updated To: " + this.memberId);
+        }else if(option == 3){
+            int memberID = Integer.parseInt(change);
+            this.memberId = memberID;
         }
-        scanner.close();
     }
 
     // Stub (Adding the dummy list) and testing if the book is available
     public void removedBorrowedBook(int bookID){
-        for(Book book : this.borrowedBooks){
-            if(book.bookID == bookID){
-                book.isAvailable = true;
-                this.borrowedBooks.remove(book);
+        for(int i = 0; i < borrowedBooks.size(); i++){
+            Book booker = borrowedBooks.get(i);
+            if(booker.bookID == bookID){
+                booker.isAvailable = true;
+                borrowedBooks.remove(i);
             }
         }
     }
