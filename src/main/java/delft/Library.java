@@ -24,22 +24,16 @@ public class Library {
     }
 
     // Stub (Verify after book is added)
-    public void addBook(String name,
-                        String author,
-                        int year,
-                        String isbn,
-                        int bookID,
-                        boolean isAvailable,
-                        String genre)
+    public void addBook(Book newBook)
     {
         // Makes a new book object for the book that is being added
-        Book newBook = new Book(name, author, year, isbn, bookID, isAvailable, genre);
+
 
         // Adds the new book to the list allBooks
         allBooks.add(newBook);
 
         // Since added books cannot already be checked out, we add the book to the available list
-        availableBookIds.add(bookID);
+        availableBookIds.add(newBook.bookID);
     }
 
     // Stub (Verify after book is added)
@@ -62,38 +56,28 @@ public class Library {
     }
 
     // Stub (Verify after book is added)
-    public void checkoutBook(Member member, Book book) {
-        // We check if the book is available:
-        if (book.checkAvailability() == true) {
+    public void checkoutBook(Member member, int bookID) {
+        for(Book book : allBooks){
+            if(bookID == book.bookID){
+                loanedBookIds.add(bookID);
+                availableBookIds.remove(bookID);
 
-            int bookId = findBookIdByName(book.name);
-
-            // When a book is checked out, we want to remove it from the available list:
-            availableBookIds.remove(bookId);
-
-            // and add it to the loaned list:
-            loanedBookIds.add(bookId);
-
-            // link the book to the member:
-            member.addBorrowedBook(book);
+                member.addBorrowedBook(book);
+                break;
+            }
         }
-        else
-        {
-            // message for book not available for check out
-        }
-
 
 
     }
 
     // Stub (Verify after book is added)
-    public void addMember(String name, String email, int memberID, List<Book> borrowedBooks)
+    public void addMember(Member member)
     {
         // Makes a new member object for the member that is being added
-        Member newMember = new Member(name, email, memberID, borrowedBooks);
 
         // Adds the new member to the list of members
-        this.members.add(newMember);
+        this.members.add(member);
+
     }
 
     public void revokeMembership(Member member)
@@ -159,9 +143,15 @@ public class Library {
     // Stub or Mock
     public void returnBook(Member member, Book book){
         book.isAvailable = true;
-        loanedBookIds.remove(book.bookID);
-        availableBookIds.add(book.bookID);
+        for(int x = 0; x < loanedBookIds.size();x++){
+            if(loanedBookIds.get(x)==book.bookID){
+                loanedBookIds.remove(x);
+                break;
+            }
+        }
 
+
+        availableBookIds.add(book.bookID);
         member.removedBorrowedBook(book.bookID);
     }
 

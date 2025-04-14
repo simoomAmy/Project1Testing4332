@@ -73,7 +73,7 @@ public class Member {
             for(int x = 0; x < borrowedBooks.size(); x++){
                 Book booker = borrowedBooks.get(x);
                 if(booker.bookID == bookID){
-                    book.isAvailable = true;
+                    booker.isAvailable = true;
                     book = booker;
                 }
             }

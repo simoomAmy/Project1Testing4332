@@ -1,8 +1,13 @@
 package delft;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import java.util.*;
 import org.junit.jupiter.api.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.List;
 
 public class TestLibrary
 {
@@ -33,8 +38,8 @@ public class TestLibrary
         int bookID = 1;
         boolean isAvailable = true;
         String genre = "Fiction";
-
-        library.addBook(name, author, year, isbn, bookID, isAvailable, genre);
+        Book bok = new Book(name, author, year, isbn, bookID, isAvailable, genre);
+        library.addBook(bok);
         assertEquals( 1, allBooks.size());
 
     }
@@ -73,8 +78,8 @@ public class TestLibrary
         String email = "Member@gmail.com";
         int memberID = 1;
         List<Book> borrowedBooks = new ArrayList<>();
-
-        library.addMember(name, email, memberID, borrowedBooks);
+        Member member = new Member(name, email, memberID, borrowedBooks);
+        library.addMember(member);
         assertEquals(1, members.size());
     }
 
@@ -85,11 +90,11 @@ public class TestLibrary
     public void testRevokeMember()
     {
         List<Book> borrowedBooks = new ArrayList<>();
-        Member member1 = new Member("John", "john@gmail.com", 1, borrowedBooks);
-        members.add(member1);
-        library.revokeMembership(member1);
-        assertEquals(0, members.size());
-        verify(members).remove(member1);
+        Member newMem = new Member("A","A@gmail.com",12345,borrowedBooks);
+        library.members.add(newMem);
+        library.revokeMembership(newMem);
+
+        assertThat(library.members.size()).isEqualTo(0);
     }
 
     // Mocking to check if the book is available whether so
@@ -102,17 +107,20 @@ public class TestLibrary
     }
 
     // Unit (Specification) Checking if the book is available and show the member who has it
-    // Error
+    // Errorr
     @Test
     public void testWhoHasBook()
     {
         Book book = new Book("Book", "Author", 2025, "1234567890", 1, true, "Fiction");
-        allBooks.add(book);
-        loanedBookIds.add(book.bookID);
-        
-        String result = library.whoHasBook("Book");
-        assertEquals("Book", result);
-        
+        library.addBook(book);
+        Book book2 = new Book("Book", "Author", 2025, "1234567890", 1, true, "Fiction");
+        library.addBook(book2);
+        Member member = new Member("A","A@gmail.com",12345,allBooks);
+        library.addMember(member);
+        library.checkoutBook(member,1);
+        assertThat(library.whoHasBook("Book")).isEqualTo("A");
+
+
     }
 
     // Unit (Specification) Gives the list of all the members in the library
@@ -145,6 +153,7 @@ public class TestLibrary
     @Test
     public void testReturnBook()
     {
+
         Book book = new Book("Book1", "Author", 2025, "1234567890", 1, true, "Fiction");
         List<Book> borrowedBooks = new ArrayList<>();
         Member member = new Member("Member", "Member@gmail.com", 1, borrowedBooks);
