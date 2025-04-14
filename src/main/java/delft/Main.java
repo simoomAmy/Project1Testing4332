@@ -62,6 +62,7 @@ public class Main {
             String input = scanner.nextLine();
             switch (input) {
                 case "0":
+                    System.out.println("Exiting Library Management CLI.");
                     running = false;
                     break;
 

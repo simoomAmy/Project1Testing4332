@@ -69,7 +69,7 @@ public class Library {
             int bookId = findBookIdByName(book.name);
 
             // When a book is checked out, we want to remove it from the available list:
-            availableBookIds.remove(bookId);
+            availableBookIds.remove(Integer.valueOf(bookId));
 
             // and add it to the loaned list:
             loanedBookIds.add(bookId);
@@ -79,7 +79,7 @@ public class Library {
         }
         else
         {
-            // message for book not available for check out
+            System.out.println("Book is not available.");
         }
 
 
@@ -159,7 +159,7 @@ public class Library {
         int bookId = findBookIdByName(book.name);
 
         // When a book is returned, we want to remove it from the loaned list:
-        loanedBookIds.remove(bookId);
+        loanedBookIds.remove(Integer.valueOf(bookId));
 
         // and add it to the available list:
         availableBookIds.add(bookId);
