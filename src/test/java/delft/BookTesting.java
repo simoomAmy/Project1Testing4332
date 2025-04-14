@@ -1,10 +1,6 @@
-// Brandon Walton
-
 package delft;
-
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.*;
 import java.io.*;
 import org.junit.jupiter.api.*;
@@ -14,14 +10,13 @@ class BookTest {
     private Scanner scan;
     private Book book;
 
-
     @BeforeEach
     void setup() {
         book = new Book("Brandon", "John Doe", 2008, "012345678", 0, true, "Testing");
     }
 
-    // [Specification Test] - Verifies that the checkAvailability method returns true or false (based on the availability)
     @Test
+    // Testing the availability of book
     void testingAvailability() {
         assertTrue(book.checkAvailability());
         book.isAvailable = false;
@@ -29,8 +24,124 @@ class BookTest {
     }
 
     @Test
-    void testingGetBookInfo(){
-        // Setting up the output capture for System.out to redirect printed content
+    // Simulating User Input and ensuring the fields are updated
+    void testUpdateBookInfo() {
+        // Simulate user input: selecting options 1 to 6, with new values for each field
+        String simulatedInput = String.join("\n",
+                "1", "New Author",
+                "2", "New Genre",
+                "3", "2000",
+                "4", "2222",
+                "5", "42",
+                "6",
+                "7"
+        );
+
+        // Simulating User Input
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(simulatedInput.getBytes());
+        System.setIn(inputStream);
+        Scanner scanner = new Scanner(System.in);
+        book.updateBookInfo();
+
+        assertEquals("New Author", book.author);
+        assertEquals("New Genre", book.genre);
+        assertEquals(2000, book.year);
+        assertEquals("2222", book.isbn);
+        assertEquals(42, book.bookID);
+        assertFalse(book.checkAvailability());
+    }
+
+    @Test
+
+    // Testing when a user provides an integer value below the threshold
+    void testingUserInsertsBelowMinimum() {
+        // Simulates invalid user input: "0" (not a valid option 1-7)
+        String invalidInput = "0";
+        InputStream originalSystemIn = System.in;
+        System.setIn(new ByteArrayInputStream(invalidInput.getBytes()));
+        assertThrows(IllegalArgumentException.class, book::updateBookInfo);
+        System.setIn(originalSystemIn);
+    }
+
+    @Test
+    // Testing when a user provides an integer value above the threshold
+    void testingUserInsertsAboveMaximum() {
+        // Simulates invalid user input: "8" (not a valid option 1-7)
+        String invalidInput = "8";
+        InputStream originalSystemIn = System.in;
+        System.setIn(new ByteArrayInputStream(invalidInput.getBytes()));
+        assertThrows(IllegalArgumentException.class, book::updateBookInfo);
+        System.setIn(originalSystemIn);
+    }
+
+    @Test
+    // Testing when a user updates the author field
+    void testUpdateAuthor() {
+        // Simulating User Input
+        String input = "Jane Doe";
+        InputStream originalSystemIn = System.in;
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+
+        // Call the method with actual System.in
+        String option = "Author";
+        String prev = book.author;
+        String result = book.updateField(new Scanner(System.in), option, prev);
+
+        assertEquals(input.trim(), result);
+        System.setIn(originalSystemIn);
+    }
+
+    @Test
+    // Testing when a user updates the genre field
+    void testUpdateGenre() {
+        // Simulating User Input
+        String input = "Fiction";
+        InputStream originalSystemIn = System.in;
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+
+        String option = "Genre";
+        String prev = book.author;
+        String result = book.updateField(new Scanner(System.in), option, prev);
+
+        assertEquals(input.trim(), result);
+        System.setIn(originalSystemIn);
+    }
+
+    @Test
+    // Testing when a user updates the isbn field
+    void testUpdateISBN() {
+        // Simulating User Input
+        String input = "0123";
+        InputStream originalSystemIn = System.in;
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+
+        String option = "ISBN";
+        String prev = book.author;
+        String result = book.updateField(new Scanner(System.in), option, prev);
+
+        assertEquals(input.trim(), result);
+        System.setIn(originalSystemIn);
+    }
+
+    @Test
+    // Testing when a user updates the bookID field
+    void testUpdateBookID() {
+        // Simulating User Input
+        String input = "1";
+        InputStream originalSystemIn = System.in;
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+
+        String option = "BookID";
+        String prev = book.author;
+        String result = book.updateField(new Scanner(System.in), option, prev);
+
+        assertEquals(input.trim(), result);
+        System.setIn(originalSystemIn);
+    }
+
+    @Test
+    // Testing that the book correctly displays the desired format and correct book
+    void testingGetBookInfo() {
         PrintStream out = System.out;
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         PrintStream ps = new PrintStream(bos);
@@ -38,7 +149,6 @@ class BookTest {
 
         book.getBookInfo();
 
-        // Restore the original System.out after capturing the output
         System.out.flush();
         System.setOut(out);
         String output = bos.toString();
@@ -54,58 +164,44 @@ class BookTest {
     }
 
     @Test
-    void testUpdateField() {
-        String input = "Jane Doe";
-        InputStream originalSystemIn = System.in;
-        System.setIn(new ByteArrayInputStream(input.getBytes()));
+    // Testing Invalid fields when creating a book
+    void testInvalidBookFields() {
+        String name = "user";
+        String author = "John Doe";
+        int year = 2000;
+        String isbn = "012345678";
+        String genre = "Testing";
+        boolean checkAvailability = true;
+        int bookID = 1;
 
-        // Call the method with actual System.in
-        String option = "Author";
-        String prev = book.author;
-        String result = Book.updateField(new Scanner(System.in), option, prev);
-
-        assertEquals(input.trim(), result);
-        System.setIn(originalSystemIn);
-    }
-
-    @Test
-    void testBookConstructorWithInvalidFields() {
         // Test when the name is empty
         assertThrows(IllegalArgumentException.class, () -> {
-            new Book("", "John Doe", 2008, "012345678", 1, true, "Fiction");
+            new Book("", author, year, isbn, 1, true, genre );
         });
 
         // Test when the author is empty
         assertThrows(IllegalArgumentException.class, () -> {
-            new Book("The Great Book", "", 2008, "012345678", 1, true, "Fiction");
+            new Book(name, "", year, isbn, 1, true, genre );
         });
 
         // Test when the genre is empty
         assertThrows(IllegalArgumentException.class, () -> {
-            new Book("The Great Book", "John Doe", 2008, "012345678", 1, true, "");
+            new Book(name, author, year, isbn, 1, true, "" );
         });
 
         // Test when the name is null
         assertThrows(IllegalArgumentException.class, () -> {
-            new Book(null, "John Doe", 2008, "012345678", 1, true, "Fiction");
+            new Book(null, author, year, isbn, 1, true, genre );
         });
 
-        // Test when the author is null
+        // Test when the author is empty
         assertThrows(IllegalArgumentException.class, () -> {
-            new Book("The Great Book", null, 2008, "012345678", 1, true, "Fiction");
+            new Book(name, null, year, isbn, 1, true, genre );
         });
 
-        // Test when the genre is null
+        // Test when the genre is empty
         assertThrows(IllegalArgumentException.class, () -> {
-            new Book("The Great Book", "John Doe", 2008, "012345678", 1, true, null);
+            new Book(name, author, year, isbn, 1, true, null);
         });
     }
-
-
-
-
-
-
-
-
 }
