@@ -38,6 +38,7 @@ public class Main {
 
         Library library = new Library(availableBookIds, allBooks, loanedBookIds, members);
 
+        
         boolean running = true;
         while (running) {
             System.out.println("=== Library Management CLI ===");
@@ -67,19 +68,8 @@ public class Main {
                     if (bookIdToFind != -1) {
                         for (Book book : allBooks) {
                             if (book.bookID == bookIdToFind) {
-                                System.out.println("____________________________");
-                                System.out.println("Book Name: " + book.name);
-                                System.out.println("Author: " + book.author);
-                                System.out.println("Publication Year: " + book.year);
-                                System.out.println("ISBN: " + book.isbn);
-                                System.out.println("ID: " + book.bookID);
-                                System.out.println("Genre: " + book.genre);
-                                System.out.println("Available: " + book.isAvailable);
-                                if (bookOwner != null) {
-                                    System.out.println("Currently loaned to: " + bookOwner);
-                                }
-                                System.out.println("____________________________");
-                                break;
+                                clearScreen();
+                                book.getBookInfo();
                             }
                         }
                     } else {
