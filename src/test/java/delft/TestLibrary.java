@@ -1,13 +1,8 @@
 package delft;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import java.util.*;
 import org.junit.jupiter.api.*;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.util.List;
 
 public class TestLibrary
 {
@@ -33,13 +28,13 @@ public class TestLibrary
     {
         String name = "Book";
         String author = "Author";
-        int year = 2025;
+        int year = 2023;
         String isbn = "1234567890";
         int bookID = 1;
         boolean isAvailable = true;
         String genre = "Fiction";
-        Book bok = new Book(name, author, year, isbn, bookID, isAvailable, genre);
-        library.addBook(bok);
+        Book book = new Book(name, author, year, isbn, bookID, isAvailable, genre);
+        library.addBook(book);
         assertEquals( 1, allBooks.size());
 
     }
@@ -66,6 +61,7 @@ public class TestLibrary
     @Test
     public void testCheckoutBook()
     {
+
         Book book = new Book("Book1", "Author", 2025, "1234567890", 1, true, "Fiction");
         allBooks.add(book);
         availableBookIds.add(1);
@@ -87,10 +83,18 @@ public class TestLibrary
         assertEquals(1, members.size());
     }
 
+//Stubbing to see if the member is removed from the list
+//Error
     //Stubbing to see if the member is removed from the list
     @Test
     public void testRevokeMember()
     {
+        Book book = new Book("Book1", "Author", 2025, "1234567890", 1, false, "Fiction");
+        Member member1 = new Member("Member", "Member@gmail.com", 1, new ArrayList<>(List.of(book)));
+        members.add(member1);
+        library.revokeMembership(member1);
+        assertEquals(0, members.size());
+        verify(members).remove(member1);
         List<Book> borrowedBooks = new ArrayList<>();
         Member newMem = new Member("A","A@gmail.com",12345,borrowedBooks);
         library.members.add(newMem);
@@ -113,6 +117,12 @@ public class TestLibrary
     public void testWhoHasBook()
     {
         Book book = new Book("Book", "Author", 2025, "1234567890", 1, true, "Fiction");
+        allBooks.add(book);
+        loanedBookIds.add(book.bookID);
+
+        String result = library.whoHasBook("Book");
+        assertEquals("Book", result);
+
         library.addBook(book);
         Book book2 = new Book("Book", "Author", 2025, "1234567890", 1, true, "Fiction");
         library.addBook(book2);
@@ -128,8 +138,8 @@ public class TestLibrary
     @Test
     public void testGetAllMembers()
     {
-        List<Book> borrowedBooks = new ArrayList<>();
-        Member member1 = new Member("Member", "Member@gmail.com", 1, borrowedBooks);
+        Book book = new Book("Book1", "Author", 2025, "1234567890", 1, false, "Fiction");
+        Member member1 = new Member("Member", "Member@gmail.com", 1, new ArrayList<>(List.of(book)));
         members.add(member1);
 
         List<Member> result = library.getAllMembers();
@@ -149,9 +159,12 @@ public class TestLibrary
     }
 
     // Stubbing to see if the book is returned and removed from the loaned list
+    // Error
     @Test
     public void testReturnBook()
     {
+        Book book = new Book("Book1", "Author", 2025, "1234567890", 1, false, "Fiction");
+        Member member = new Member("Member", "Member@gmail.com", 1,new ArrayList<>(List.of(book)));
 
         Book book = new Book("Book1", "Author", 2025, "1234567890", 1, true, "Fiction");
         List<Book> borrowedBooks = new ArrayList<>();
@@ -162,5 +175,8 @@ public class TestLibrary
 
         library.returnBook(member, book);
 
+        verify(allBooks).remove(book);
+        verify(availableBookIds).add(1);
+        verify(member).removedBorrowedBook(1);
     }
 }

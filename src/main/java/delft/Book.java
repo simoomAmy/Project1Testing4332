@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Book {
-
     public String name;
     public String author;
     public int year;
@@ -13,6 +12,13 @@ public class Book {
     public int bookID;
     public boolean isAvailable;
     public String genre;
+
+    /**
+     * The Book class represents a book object with various attributes such as name,
+     * author, year of publication, ISBN, book ID, availability status, and genre.
+     * It includes methods to check the availability of the book, update its details,
+     * and display its information.
+     */
 
     public Book(String name,
                 String author,
