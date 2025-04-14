@@ -112,7 +112,7 @@ public class Main {
 
                         //if book exist and can be checked out, check it out
                         if (bookToCheckout != null) {
-                            library.checkoutBook(checkoutMember, bookToCheckout);
+                            library.checkoutBook(checkoutMember, bookToCheckout.bookID);
                             clearScreen();
                             System.out.println("Book: " + bookToCheckout.name + " checked out successfully to: " + checkoutMember.name);
                         } else {
@@ -175,7 +175,8 @@ public class Main {
                     System.out.print("Enter member ID: ");
                     int newMemberId = Integer.parseInt(scanner.nextLine());
                     List<Book> borrowedBooks = new ArrayList<>();
-                    library.addMember(memberName, memberEmail, newMemberId, borrowedBooks);
+                    Member member = new Member(memberName, memberEmail, newMemberId, borrowedBooks);
+                    library.addMember(member);
                     clearScreen();
                     System.out.println("Member: " + memberName + " added successfully.");
                     break;
@@ -214,7 +215,8 @@ public class Main {
                     boolean isBookAvailable = true; // books should be available by default
                     System.out.print("Enter genre: ");
                     String genre = scanner.nextLine();
-                    library.addBook(name, author, year, isbn, bookID, isBookAvailable, genre);
+                    Book book = new Book(name, author, year, isbn, bookID, isBookAvailable, genre);
+                    library.addBook(book);
                     clearScreen();
                     System.out.println("Book: " + name + " added successfully.");
                     break;
@@ -224,9 +226,9 @@ public class Main {
                     int bookIdToRemove = Integer.parseInt(scanner.nextLine());
                     Book bookToRemove = null;
                     // if book is found in the allBooks list
-                    for (Book book : allBooks) {
-                        if (book.bookID == bookIdToRemove) {
-                            bookToRemove = book;
+                    for (Book booker : allBooks) {
+                        if (booker.bookID == bookIdToRemove) {
+                            bookToRemove = booker;
                             break;
                         }
                     }
@@ -253,9 +255,9 @@ public class Main {
                     int bookIdToUpdate = Integer.parseInt(scanner.nextLine());
                     Book bookToUpdate = null;
                     // looks through allBooks list
-                    for (Book book : allBooks) {
-                        if (book.bookID == bookIdToUpdate) {
-                            bookToUpdate = book;
+                    for (Book bookey : allBooks) {
+                        if (bookey.bookID == bookIdToUpdate) {
+                            bookToUpdate = bookey;
                             break;
                         }
                     }
