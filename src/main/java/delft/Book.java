@@ -1,5 +1,3 @@
-//Brandon (Testing)
-
 package delft;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -73,7 +71,7 @@ public class Book {
             System.out.print("Select a field below to update: ");
 
             // Get the user input
-            int option = Integer.parseInt(scan.next());
+            int option = Integer.parseInt(scan.nextLine());
 
             // Handle the user's choice
             if (option < 1 || option > 7) {
@@ -91,7 +89,8 @@ public class Book {
                     this.year = Integer.parseInt(updateField(scan, "Year", String.valueOf(this.year)));
                     break;
                 case 4:
-                    this.isbn = updateField(scan, "ISBN", this.isbn);;
+                    this.isbn = updateField(scan, "ISBN", this.isbn);
+                    break;
                 case 5:
                     this.bookID = Integer.parseInt(updateField(scan, "BookID", String.valueOf(this.bookID)));
                     break;
@@ -131,7 +130,7 @@ public class Book {
     
 
     // Specification
-    public static String updateField(Scanner scan, String option, String prev){
+    public String updateField(Scanner scan, String option, String prev){
         Main.clearScreen();
         System.out.printf("Updating %s%n", option);
         System.out.printf("  - Old Value: %s%n", prev);
@@ -139,4 +138,6 @@ public class Book {
         String newValue = scan.nextLine();
         return newValue;
     }
+
+
 }
