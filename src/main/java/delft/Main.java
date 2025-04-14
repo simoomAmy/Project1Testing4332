@@ -54,7 +54,7 @@ public class Main {
             System.out.println("9. Remove Book");
             System.out.println("10. List All Members");
             System.out.println("11. Update Book Information");
-            System.out.println("12. Update Book");
+            System.out.println("12. Update Member Information");
             System.out.println("0. Exit");
             System.out.print("Select an option: ");
         
@@ -112,7 +112,7 @@ public class Main {
 
                         //if book exist and can be checked out, check it out
                         if (bookToCheckout != null) {
-                            library.checkoutBook(checkoutMember, bookToCheckout.bookID);
+                            library.checkoutBook(checkoutMember, bookToCheckout);
                             clearScreen();
                             System.out.println("Book: " + bookToCheckout.name + " checked out successfully to: " + checkoutMember.name);
                         } else {
@@ -176,7 +176,7 @@ public class Main {
                     int newMemberId = Integer.parseInt(scanner.nextLine());
                     List<Book> borrowedBooks = new ArrayList<>();
                     Member member = new Member(memberName, memberEmail, newMemberId, borrowedBooks);
-                    library.addMember(member);
+                    library.addMember(member.name, member.email, member.memberId, member.borrowedBooks);
                     clearScreen();
                     System.out.println("Member: " + memberName + " added successfully.");
                     break;
@@ -216,7 +216,7 @@ public class Main {
                     System.out.print("Enter genre: ");
                     String genre = scanner.nextLine();
                     Book book = new Book(name, author, year, isbn, bookID, isBookAvailable, genre);
-                    library.addBook(book);
+                    library.addBook(book.name, book.author, book.year, book.isbn, book.bookID, book.isAvailable, book.genre);
                     clearScreen();
                     System.out.println("Book: " + name + " added successfully.");
                     break;

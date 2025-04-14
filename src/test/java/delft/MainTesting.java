@@ -187,4 +187,78 @@ class MainTesting {
         // verifies output contains expected
         assertThat(output).contains("Book not found.");
     }
+
+    @Test
+    void testingCheckingOutWithBook() {
+        // user input
+        String simulatedInput = "2\n1\n2\n10\n0\n"; // prints all members and exits
+        System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
+
+
+        // main function call
+        Main.main(new String[]{});
+
+        // captures output
+        String output = outputStream.toString();
+
+        // verifies output contains expected
+        assertThat(output).contains("Book: Book 2 checked out successfully to: Jacob");
+        assertThat(output).contains("Book 2 ID: 2");
+        assertThat(output).doesNotContain("Book not found.");
+    }
+
+    @Test
+    void testingCheckingOutWithoutBook() {
+        // user input
+        String simulatedInput = "2\n1\n345\n10\n0\n"; // prints all members and exits
+        System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
+
+
+        // main function call
+        Main.main(new String[]{});
+
+        // captures output
+        String output = outputStream.toString();
+
+        // verifies output contains expected
+        assertThat(output).contains("Book not found.");
+        assertThat(output).doesNotContain("ID: 345");
+    }
+
+    @Test
+    void testingAddMember() {
+        // user input
+        String simulatedInput = "6\nEmily\neshapi@cox.net\n10\n0\n"; // adds new member than exits
+        System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
+
+
+        // main function call
+        Main.main(new String[]{});
+
+        // captures output
+        String output = outputStream.toString();
+
+        // verifies output contains expected
+        assertThat(output).contains("Member: Emily added successfully.");
+        
+    }
+
+    @Test
+    void testingRemoveMember() {
+        // user input
+        String simulatedInput = "6\nEmily\neshapi@cox.net\n10\n7\n10\n0\n"; // adds new member then removes member
+        System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
+
+
+        // main function call
+        Main.main(new String[]{});
+
+        // captures output
+        String output = outputStream.toString();
+
+        // verifies output contains expected
+        assertThat(output).contains("Member with ID 10 removed successfully.");
+        
+    }
+
 }
