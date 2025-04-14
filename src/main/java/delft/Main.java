@@ -54,6 +54,7 @@ public class Main {
             System.out.println("9. Remove Book");
             System.out.println("10. List All Members");
             System.out.println("11. Update Book Information");
+            System.out.println("12. Update Book");
             System.out.println("0. Exit");
             System.out.print("Select an option: ");
         
@@ -266,6 +267,37 @@ public class Main {
                         System.out.println("Book not found.");
                     }
                     break;
+                case "12":
+                    System.out.println("Please Provide the Member ID of the Member information you wish to update: ");
+                    int memberIDToUpdate = Integer.parseInt(scanner.nextLine());
+                    for (Member m : members) {
+                        if(m.memberId == memberIDToUpdate) {
+                            System.out.println("Member ID: " + m.memberId + " selected.");
+                            System.out.print("Please enter the option you wish to update:\n" +
+                                    "1. Name - Currently : "+m.name +"\n" +
+                                    "2. Email - Currently: "+m.email+"\n"+
+                                    "3. MemberID - Currently : "+memberIDToUpdate+"\n");
+                            int option = Integer.parseInt(scanner.nextLine());
+                            switch (option) {
+                                case 1:
+                                    System.out.print("Please input the new Name: \n");
+                                    String newName = scanner.nextLine();
+                                    m.updateMemberInfo(option, newName);
+                                case 2:
+                                    System.out.print("Please input the new Email: \n");
+                                    String newEmail = scanner.nextLine();
+                                    m.updateMemberInfo(option, newEmail);
+                                case 3:
+                                    System.out.print("Please input the new MemberID: \n");
+                                    String intNum = scanner.nextLine();
+                                    m.updateMemberInfo(option,intNum);
+                                default:
+                                    System.out.println("Invalid option");
+
+                            }
+
+                        }
+                    }
                 default:
                     System.out.println("Invalid option. Please try again.");
             }
