@@ -98,11 +98,11 @@ public class Library {
 
     public void revokeMembership(Member member)
     {
-        for (Member currentMember: this.members) {
-
-            if (currentMember.equals(member)){
+        for(int i = 0; i < members.size(); i++) {
+            Member currentMember = members.get(i);
+            if (currentMember.equals(member)) {
                 this.members.remove(currentMember);
-            } else{
+            } else {
                 System.out.println("No Member found");
             }
         }
@@ -122,10 +122,13 @@ public class Library {
     public String whoHasBook(String bookName)
     {
         // Check whether if the book is in the loaned list
-        for (int bookId : loanedBookIds) {
-            if (bookName.equals(allBooks.get(bookId).name)) {
-                // Returns the member if the book is in the loaned list
-                return allBooks.get(bookId).name;
+        for (int i=0; i < members.size();i++) {
+            Member currentMember = members.get(i);
+            for(int z = 0; i< currentMember.getborrowedBookList().size();z++){
+                Book currentBook = currentMember.getborrowedBookList().get(z);
+                if(bookName.equals(currentBook.name)){
+                    return currentMember.name;
+                }
             }
         }
         // If the book not found in loaned list
@@ -155,17 +158,11 @@ public class Library {
 
     // Stub or Mock
     public void returnBook(Member member, Book book){
+        book.isAvailable = true;
+        loanedBookIds.remove(book.bookID);
+        availableBookIds.add(book.bookID);
 
-        int bookId = findBookIdByName(book.name);
-
-        // When a book is returned, we want to remove it from the loaned list:
-        loanedBookIds.remove(bookId);
-
-        // and add it to the available list:
-        availableBookIds.add(bookId);
-
-        // and remove it from the member's borrowed books:
-        member.removedBorrowedBook(bookId);
+        member.removedBorrowedBook(book.bookID);
     }
 
 

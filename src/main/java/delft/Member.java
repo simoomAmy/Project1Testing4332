@@ -66,13 +66,21 @@ public class Member {
 
     // Stub (Adding the dummy list) and testing if the book is available
     public void removedBorrowedBook(int bookID){
-        for(int i = 0; i < borrowedBooks.size(); i++){
-            Book booker = borrowedBooks.get(i);
-            if(booker.bookID == bookID){
-                booker.isAvailable = true;
-                borrowedBooks.remove(i);
+        int size = this.borrowedBooks.size();
+
+        if(this.borrowedBooks.size() > 0){
+            Book book = null;
+            for(int x = 0; x < borrowedBooks.size(); x++){
+                Book booker = borrowedBooks.get(x);
+                if(booker.bookID == bookID){
+                    book.isAvailable = true;
+                    book = booker;
+                }
             }
+            this.borrowedBooks.remove(book);
+
         }
+
     }
 
 }
