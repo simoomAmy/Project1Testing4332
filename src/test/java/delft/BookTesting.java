@@ -7,16 +7,17 @@ import org.junit.jupiter.api.*;
 
 class BookTest {
 
-    private Scanner scan;
+
     private Book book;
 
     @BeforeEach
     void setup() {
+        // Global book (Ensures consistency with needed valid books)
         book = new Book("Brandon", "John Doe", 2008, "012345678", 0, true, "Testing");
     }
 
     @Test
-    // Testing the availability of book
+    // Testing the availability of a book
     void testingAvailability() {
         assertTrue(book.checkAvailability());
         book.isAvailable = false;
@@ -40,7 +41,6 @@ class BookTest {
         // Simulating User Input
         ByteArrayInputStream inputStream = new ByteArrayInputStream(simulatedInput.getBytes());
         System.setIn(inputStream);
-        Scanner scanner = new Scanner(System.in);
         book.updateBookInfo();
 
         assertEquals("New Author", book.author);
