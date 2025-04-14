@@ -3,6 +3,7 @@
 package delft;
 
 import java.util.List;
+import java.util.Iterator;
 
 public class Library {
 
@@ -96,18 +97,25 @@ public class Library {
         this.members.add(newMember);
     }
 
-    public void revokeMembership(Member member)
-    {
-        for (Member currentMember: this.members) {
+    public void revokeMembership(Member member) {
+        Iterator<Member> iterator = this.members.iterator();
+        boolean memberFound = false;
 
-            if (currentMember.equals(member)){
-                this.members.remove(currentMember);
-            } else{
-                System.out.println("No Member found");
+        while (iterator.hasNext()) {
+            Member currentMember = iterator.next();
+            if (currentMember.equals(member)) {
+                iterator.remove(); // Safely remove the member
+                memberFound = true;
+                System.out.println("Member removed successfully.");
+                break;
             }
         }
 
+        if (!memberFound) {
+            System.out.println("No Member found");
+        }
     }
+
     // Checks if the book is available and prints if it's available or not
     public void bookAvailability(Book book)
     {
