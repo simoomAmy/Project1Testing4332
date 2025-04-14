@@ -15,7 +15,7 @@ import org.junit.jupiter.api.*;
 class LibraryTesting {
 
     @Test
-    public void test() {
+    public void memberTesting() {
         //to give to the memeber testing
         String name = "amy";
         String email = "amy@gmail.com";
