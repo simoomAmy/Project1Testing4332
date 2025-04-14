@@ -1,18 +1,38 @@
-Write tests for the `releaseNewEdition` method that is used to add new editions of books.
+# Library Management System
 
-Achieve 100% branch+condition coverage of this method Mock only what needs to be mocked.
+## Overview
+This project is a **Library Management System** implemented in **Java**. It provides functionality to manage **books**, **library members**, and their **interactions**.  
+The system involves three main classes:
+- `Library`
+- `Member`
+- `Book`
 
-You may use verification statement of the format
+---
 
-```
-verify(mock, times(n)).method( param 1, param 2....)
-```
-where the statement verifies that the method() with the specific parameters is called for the MOCKED object exactly "n" times.
+## How to Run
 
-AND 
+### Prerequisites
+- Java **17** or higher.
 
-```
-verify(mock, never()).method( param 1, param 2....)
+### Build and Run
+1. Clone the repository.  
+2. Navigate to the project directory.  
+3. Click **Run**.
 
-```
-where the  statement verifies that the method() with the specific parameters is never called for the MOCKED object.
+### Usage
+Follow CLI prompts to interact with the library system.
+
+---
+
+## Testing
+The project includes unit tests for all major functionalities.  
+The tests are located in the `src/test/java/delft` directory.  
+To run the tests, click **Run**.
+
+---
+
+## Authors
+- Brandon Walton  
+- Nathan Hoang  
+- Jacob Kinchen  
+- Amy Granados

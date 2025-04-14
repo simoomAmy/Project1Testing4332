@@ -60,7 +60,7 @@ public class Library {
         for(Book book : allBooks){
             if(bookID == book.bookID){
                 loanedBookIds.add(bookID);
-                availableBookIds.remove(bookID);
+                availableBookIds.remove(Integer.valueOf(bookID));
 
                 member.addBorrowedBook(book);
                 break;
