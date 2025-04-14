@@ -22,9 +22,18 @@ public class Book {
                 String isbn,
                 int bookID,
                 boolean isAvailable,
-                String genre
-    )
+                String genre)
     {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be empty or null");
+        }
+        if (author == null || author.trim().isEmpty()) {
+            throw new IllegalArgumentException("Author cannot be empty or null");
+        }
+        if (genre == null || genre.trim().isEmpty()) {
+            throw new IllegalArgumentException("Genre cannot be empty or null");
+        }
+
         this.name = name;
         this.author = author;
         this.year = year;
@@ -33,6 +42,7 @@ public class Book {
         this.isAvailable = isAvailable;
         this.genre = genre;
     }
+
 
     // Specification (Unit Test)
     public boolean checkAvailability() {
@@ -66,31 +76,27 @@ public class Book {
             int option = Integer.parseInt(scan.next());
 
             // Handle the user's choice
+            if (option < 1 || option > 7) {
+                throw new IllegalArgumentException("Invalid option. Please choose a valid option between 1 and 6.");
+            }
+
             switch (option) {
                 case 1:
-                    String newAuthor = updateField(scan, "Author", this.author);
-                    this.author = newAuthor;
+                    this.author = updateField(scan, "Author", this.author);
                     break;
                 case 2:
-                    String newGenre = updateField(scan, "Genre", this.genre);
-                    this.genre = newGenre;
+                    this.genre = updateField(scan, "Genre", this.genre);
                     break;
                 case 3:
-                    String newStringYear = updateField(scan, "Year", String.valueOf(this.year));
-                    int newYear = Integer.parseInt(newStringYear);
-                    this.year = newYear;
+                    this.year = Integer.parseInt(updateField(scan, "Year", String.valueOf(this.year)));
                     break;
                 case 4:
-                    String newISBN = updateField(scan, "ISBN", this.isbn);
-                    this.isbn = newISBN;
+                    this.isbn = updateField(scan, "ISBN", this.isbn);;
                 case 5:
-                    String newStringID = updateField(scan, "BookID", String.valueOf(this.bookID));
-                    int newID = Integer.parseInt(newStringID);
-                    this.bookID = newID;
+                    this.bookID = Integer.parseInt(updateField(scan, "BookID", String.valueOf(this.bookID)));
                     break;
                 case 6:
-                    boolean prev = this.isAvailable;
-                    this.isAvailable = !prev;
+                    this.isAvailable = !this.isAvailable;;
                     break;
                 case 7:
                     running = false;
@@ -130,7 +136,7 @@ public class Book {
         System.out.printf("Updating %s%n", option);
         System.out.printf("  - Old Value: %s%n", prev);
         System.out.printf("  - Insert New Value: ");
-        String newValue = scan.next();
+        String newValue = scan.nextLine();
         return newValue;
     }
 }
