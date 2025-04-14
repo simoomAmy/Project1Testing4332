@@ -112,7 +112,7 @@ public class Main {
 
                         //if book exist and can be checked out, check it out
                         if (bookToCheckout != null) {
-                            library.checkoutBook(checkoutMember, bookToCheckout);
+                            library.checkoutBook(checkoutMember, bookIdToCheckout);
                             clearScreen();
                             System.out.println("Book: " + bookToCheckout.name + " checked out successfully to: " + checkoutMember.name);
                         } else {
@@ -176,7 +176,7 @@ public class Main {
                     int newMemberId = Integer.parseInt(scanner.nextLine());
                     List<Book> borrowedBooks = new ArrayList<>();
                     Member member = new Member(memberName, memberEmail, newMemberId, borrowedBooks);
-                    library.addMember(member.name, member.email, member.memberId, member.borrowedBooks);
+                    library.addMember(member);
                     clearScreen();
                     System.out.println("Member: " + memberName + " added successfully.");
                     break;
@@ -216,7 +216,7 @@ public class Main {
                     System.out.print("Enter genre: ");
                     String genre = scanner.nextLine();
                     Book book = new Book(name, author, year, isbn, bookID, isBookAvailable, genre);
-                    library.addBook(book.name, book.author, book.year, book.isbn, book.bookID, book.isAvailable, book.genre);
+                    library.addBook(book);
                     clearScreen();
                     System.out.println("Book: " + name + " added successfully.");
                     break;

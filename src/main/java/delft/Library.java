@@ -3,7 +3,6 @@
 package delft;
 
 import java.util.List;
-import java.util.Iterator;
 
 public class Library {
 
@@ -25,22 +24,16 @@ public class Library {
     }
 
     // Stub (Verify after book is added)
-    public void addBook(String name,
-                        String author,
-                        int year,
-                        String isbn,
-                        int bookID,
-                        boolean isAvailable,
-                        String genre)
+    public void addBook(Book newBook)
     {
         // Makes a new book object for the book that is being added
-        Book newBook = new Book(name, author, year, isbn, bookID, isAvailable, genre);
+
 
         // Adds the new book to the list allBooks
         allBooks.add(newBook);
 
         // Since added books cannot already be checked out, we add the book to the available list
-        availableBookIds.add(bookID);
+        availableBookIds.add(newBook.bookID);
     }
 
     // Stub (Verify after book is added)
@@ -63,59 +56,42 @@ public class Library {
     }
 
     // Stub (Verify after book is added)
-    public void checkoutBook(Member member, Book book) {
-        // We check if the book is available:
-        if (book.checkAvailability() == true) {
+    public void checkoutBook(Member member, int bookID) {
+        for(Book book : allBooks){
+            if(bookID == book.bookID){
+                loanedBookIds.add(bookID);
+                availableBookIds.remove(bookID);
 
-            int bookId = findBookIdByName(book.name);
-
-            // When a book is checked out, we want to remove it from the available list:
-            availableBookIds.remove(Integer.valueOf(bookId));
-
-            // and add it to the loaned list:
-            loanedBookIds.add(bookId);
-
-            // link the book to the member:
-            member.addBorrowedBook(book);
+                member.addBorrowedBook(book);
+                break;
+            }
         }
-        else
-        {
-            System.out.println("Book is not available.");
-        }
-
 
 
     }
 
     // Stub (Verify after book is added)
-    public void addMember(String name, String email, int memberID, List<Book> borrowedBooks)
+    public void addMember(Member member)
     {
         // Makes a new member object for the member that is being added
-        Member newMember = new Member(name, email, memberID, borrowedBooks);
 
         // Adds the new member to the list of members
-        this.members.add(newMember);
+        this.members.add(member);
+
     }
 
-    public void revokeMembership(Member member) {
-        Iterator<Member> iterator = this.members.iterator();
-        boolean memberFound = false;
-
-        while (iterator.hasNext()) {
-            Member currentMember = iterator.next();
+    public void revokeMembership(Member member)
+    {
+        for(int i = 0; i < members.size(); i++) {
+            Member currentMember = members.get(i);
             if (currentMember.equals(member)) {
-                iterator.remove(); // Safely remove the member
-                memberFound = true;
-                System.out.println("Member removed successfully.");
-                break;
+                this.members.remove(currentMember);
+            } else {
+                System.out.println("No Member found");
             }
         }
 
-        if (!memberFound) {
-            System.out.println("No Member found");
-        }
     }
-
     // Checks if the book is available and prints if it's available or not
     public void bookAvailability(Book book)
     {
@@ -130,10 +106,13 @@ public class Library {
     public String whoHasBook(String bookName)
     {
         // Check whether if the book is in the loaned list
-        for (int bookId : loanedBookIds) {
-            if (bookName.equals(allBooks.get(bookId).name)) {
-                // Returns the member if the book is in the loaned list
-                return allBooks.get(bookId).name;
+        for (int i=0; i < members.size();i++) {
+            Member currentMember = members.get(i);
+            for(int z = 0; i< currentMember.getborrowedBookList().size();z++){
+                Book currentBook = currentMember.getborrowedBookList().get(z);
+                if(bookName.equals(currentBook.name)){
+                    return currentMember.name;
+                }
             }
         }
         // If the book not found in loaned list
@@ -144,7 +123,7 @@ public class Library {
     // Unit (Specification)
     public List<Member> getAllMembers()
     {
-       return this.members;
+        return this.members;
     }
 
 
@@ -163,17 +142,17 @@ public class Library {
 
     // Stub or Mock
     public void returnBook(Member member, Book book){
+        book.isAvailable = true;
+        for(int x = 0; x < loanedBookIds.size();x++){
+            if(loanedBookIds.get(x)==book.bookID){
+                loanedBookIds.remove(x);
+                break;
+            }
+        }
 
-        int bookId = findBookIdByName(book.name);
 
-        // When a book is returned, we want to remove it from the loaned list:
-        loanedBookIds.remove(Integer.valueOf(bookId));
-
-        // and add it to the available list:
-        availableBookIds.add(bookId);
-
-        // and remove it from the member's borrowed books:
-        member.removedBorrowedBook(bookId);
+        availableBookIds.add(book.bookID);
+        member.removedBorrowedBook(book.bookID);
     }
 
 
