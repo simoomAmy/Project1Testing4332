@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ReleaseEditions.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">delft.LibraryTesting</a> &gt; <a href="index.source.html" class="el_package">delft</a> &gt; <span class="el_source">ReleaseEditions.java</span></div><h1>ReleaseEditions.java</h1><pre class="source lang-java linenums">package delft;
+
+import java.util.*;
+
+interface BookService {
+
+	List&lt;String&gt; retrieveBooks(String author);
+
+	void deleteBook(String author, String bookTitle);
+
+	void addBook(String author, String newBookTitle);
+
+	void updateLastVisualization(String author, String bookTitle);
+
+	void moveBook(String author, String bookTitle, String destAuthor);
+}
+
+interface EmailService {
+
+	void sendNotification(String bookTitle);
+}
+
+class ReleaseEditions {
+
+	private final BookService bookService;
+
+	private final EmailService emailService;
+
+<span class="fc" id="L29">	public ReleaseEditions(BookService bookService, EmailService emailService) {</span>
+<span class="fc" id="L30">		this.bookService = bookService;</span>
+<span class="fc" id="L31">		this.emailService = emailService;</span>
+<span class="fc" id="L32">	}</span>
+
+	/**
+	 * Creates a copy of the book, now with the new edition in the title.
+	 *
+	 * @param author
+	 *            name of the author
+	 * @param keyword
+	 *            keyword to search
+	 * @param edition
+	 *            number of the new edition
+	 */
+	public void releaseNewEdition(String author, String keyword, int edition) {
+<span class="fc" id="L45">		List&lt;String&gt; allBooks = bookService.retrieveBooks(author);</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">		for (String bookTitle : allBooks) {</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">			if (bookTitle.contains(keyword)) {</span>
+<span class="fc" id="L48">				bookService.addBook(author, bookTitle + &quot; - edition &quot; + edition);</span>
+			}
+<span class="fc" id="L50">		}</span>
+<span class="fc" id="L51">	}</span>
+}
+
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
