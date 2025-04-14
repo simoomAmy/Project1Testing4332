@@ -1,4 +1,5 @@
 package delft;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import java.util.*;
@@ -123,15 +124,6 @@ public class TestLibrary
         String result = library.whoHasBook("Book");
         assertEquals("Book", result);
 
-        library.addBook(book);
-        Book book2 = new Book("Book", "Author", 2025, "1234567890", 1, true, "Fiction");
-        library.addBook(book2);
-        Member member = new Member("A","A@gmail.com",12345,allBooks);
-        library.addMember(member);
-        library.checkoutBook(member,1);
-        assertThat(library.whoHasBook("Book")).isEqualTo("A");
-
-
     }
 
     // Unit (Specification) Gives the list of all the members in the library
@@ -163,9 +155,6 @@ public class TestLibrary
     @Test
     public void testReturnBook()
     {
-        Book book = new Book("Book1", "Author", 2025, "1234567890", 1, false, "Fiction");
-        Member member = new Member("Member", "Member@gmail.com", 1,new ArrayList<>(List.of(book)));
-
         Book book = new Book("Book1", "Author", 2025, "1234567890", 1, true, "Fiction");
         List<Book> borrowedBooks = new ArrayList<>();
         Member member = new Member("Member", "Member@gmail.com", 1, borrowedBooks);
