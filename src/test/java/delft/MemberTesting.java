@@ -1,19 +1,17 @@
 package delft;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
 
-import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.*;
 import java.util.List;
-import java.util.logging.Logger;
+
 import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.*;
 
-class LibraryTesting {
+class MemberTesting {
 
     @Test
     public void memberTesting() {
