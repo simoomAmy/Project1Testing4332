@@ -19,22 +19,26 @@ public class LibraryAccountsTest {
     @BeforeEach
     void setUp() {
         libraryAccounts = new LibraryAccounts(); // initialize the field, not a local variable
-        initialCashBalance = 39000.00;
+        initialCashBalance = 39000.00;//to have the basis to compare
     }
 
     @Property
-    void deposit(@ForAll @DoubleRange(min = 0.0, max = 100) double depositAmount) {
+    void depositPostive(@ForAll @DoubleRange(min = 0.0) double depositAmount) {
         LibraryAccounts x = new LibraryAccounts();
         boolean deposited = x.deposit(depositAmount);
+
         assertThat(deposited).isTrue();
-        assertThat(libraryAccounts.getCashBalance()).isGreaterThan(initialCashBalance);
+        assertThat(x.getCashBalance()).isEqualTo((depositAmount + 39000.00));
+    }
+    @Property
+    void depositNegative(@ForAll @DoubleRange(min = -100, max = -0.01) double depositAmount) {
+        LibraryAccounts x = new LibraryAccounts();
+        boolean deposited = x.deposit(depositAmount);
+        assertThat(deposited).isFalse();
+        assertThat(x.getCashBalance()).isEqualTo(39000.00);
     }
     /// /////////////////////////////// ////
-    @Test
-    public void depositTest(){//simple just check that the balance is being accessed and add to properly
-        libraryAccounts.deposit(500.23);
-        assertThat(libraryAccounts.getCashBalance()).isEqualTo(39000.00+500.23);
-    }
+
     @Test
     public void withdrawTestTrue(){//simple test case where check to see that on the assumption
         //that the amount is less than that availbel will successfully be subtracted and

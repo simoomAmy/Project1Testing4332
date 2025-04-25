@@ -21,7 +21,7 @@ public class LibraryAccounts {
         if(amount < 0){
             return false;
         }else {
-            cashBalance += amount;
+            cashBalance = cashBalance + amount;
             return true;
         }
     }
