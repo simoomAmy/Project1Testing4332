@@ -13,7 +13,7 @@ class MainTesting {
 
     // --- helper definitions for dynamic input strings ---
     private static final String EXIT_CODE = "0\n";
-    private static final String AUTH_PASS = "1234\n";
+    private static final String AUTH_PASS = "123456\n";
     private static final String AUTH_FAIL = "23051425\n";
     private static final String BOOK_SUBMENU = "1\n";
     private static final String MEMBER_SUBMENU = "2\n";
@@ -22,12 +22,10 @@ class MainTesting {
     private static final String RETURN_BOOK = "3\n";
     private static final String ADD_BOOK = "4\n";
     private static final String REMOVE_BOOK = "5\n";
-    private static final String UPDATE_BOOK_INFORMATION = "6\n";
     private static final String VIEW_CATALOG = "7\n";
     private static final String ADD_MEMBER = "1\n";
     private static final String REMOVE_MEMBER = "2\n";
     private static final String LIST_MEMBERS = "3\n";
-    private static final String UPDATE_MEMBER_INFORMATION = "4\n";
     private static final String LIBRARY_SUBMENU = "3\n";
 
 
@@ -378,4 +376,22 @@ class MainTesting {
         assertThat(output).doesNotContain("Too many failed attempts. Exiting program.");
     }
 
+    // Test to Check Library Submenu Is accessible
+    @Test
+    void librarySubmenuCheck() {
+
+        // user input
+        String simulatedInput = AUTH_PASS + LIBRARY_SUBMENU + EXIT_CODE; 
+        System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
+
+        // main function call
+        Main.main(new String[]{});
+
+        // captures output
+        String output = outputStream.toString();
+
+        // verifies output contains expected
+        assertThat(output).contains("=== Library Submenu ===");
+        
+    }
 }

@@ -19,9 +19,9 @@ public class Main {
         // ---- Librarian Setup ---- 
 
         // Making Librarians
-        Librarians librarianOne = new Librarians("Jacob", 1234, false);
-        Librarians librarianTwo = new Librarians("Tyler", 4321, false);
-        Librarians librarianThree = new Librarians("Dennis", 5678, false);
+        Librarians librarianOne = new Librarians("Jacob", 123456, false);
+        Librarians librarianTwo = new Librarians("Tyler", 654321, false);
+        Librarians librarianThree = new Librarians("Dennis", 456789, false);
 
         // Adding librarians To A List
         List<Librarians> librarianList = new ArrayList<>(List.of(librarianOne, librarianTwo, librarianThree));
@@ -383,6 +383,44 @@ public class Main {
                         
                 }
                 
+                case "3":
+                    clearScreen();
+                    System.out.println("=== Librarian Submenu ===");
+                    System.out.println("1. Add Volunteer Librarian");
+                    System.out.println("2. Add Donation");
+                    System.out.println("3. Withdraw Salary");
+                    System.out.println("0. Exit");
+                    System.out.print("Select an option: ");
+
+                    String librarianMenuInput = scanner.nextLine();
+
+                    switch (librarianMenuInput) {
+                        // exit case
+                        case "0":
+                            System.out.println("Exiting Library Management CLI.");
+                            running = false;
+                            break;
+
+                        case "1":
+                            clearScreen();
+                            // impliment volunteer adding functionality 
+                            break;
+                        
+                        case "2":
+                            clearScreen();
+                            // impliment donation adding functionality
+
+                        case "3":
+                            clearScreen();
+                            // impliment withdraw salary functionality 
+                            break;
+
+                        // default library submenu    
+                        default:
+                            System.out.println("Invalid option. Please try again.");
+                            break;
+                    }
+                       
                 // default CLI menu 
                 default:
                     System.out.println("Invalid option. Please try again.");
