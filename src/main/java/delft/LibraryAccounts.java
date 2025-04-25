@@ -28,7 +28,11 @@ public class LibraryAccounts {
 
     //this if to withdraw the amount of the must not allow the balance to go below 0 since the library cant
     //spend more than it has and returns a boolean to check if the transaction was successful
+    //also negative values will be considered as null
     public boolean withdraw(double amount) {
+        if(amount < 0){
+            return false;
+        }
         if((cashBalance - amount) >= 0) {
             cashBalance -= amount;
             return true;

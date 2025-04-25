@@ -1,8 +1,6 @@
 package delft;
 
-import net.jqwik.api.ForAll;
-import net.jqwik.api.Property;
-import net.jqwik.api.Provide;
+import net.jqwik.api.*;
 import net.jqwik.api.constraints.DoubleRange;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,6 +21,7 @@ public class LibraryAccountsTest {
     }
 
     @Property
+    //here the range is made to be
     void depositPostive(@ForAll @DoubleRange(min = 0.0) double depositAmount) {
         LibraryAccounts x = new LibraryAccounts();
         boolean deposited = x.deposit(depositAmount);
@@ -31,13 +30,37 @@ public class LibraryAccountsTest {
         assertThat(x.getCashBalance()).isEqualTo((depositAmount + 39000.00));
     }
     @Property
-    void depositNegative(@ForAll @DoubleRange(min = -100, max = -0.01) double depositAmount) {
+    void depositNegative(@ForAll @DoubleRange(min = -10000, max = -0.01) double depositAmount) {
         LibraryAccounts x = new LibraryAccounts();
         boolean deposited = x.deposit(depositAmount);
         assertThat(deposited).isFalse();
         assertThat(x.getCashBalance()).isEqualTo(39000.00);
     }
     /// /////////////////////////////// ////
+    @Property
+    void withdrawGreaterThanAmounts(@ForAll @DoubleRange(min = 39000.01) double withdrawAmount) {
+        LibraryAccounts x = new LibraryAccounts();
+        boolean withdraw = x.withdraw(withdrawAmount);
+        assertThat(withdraw).isFalse();
+        assertThat(x.getCashBalance()).isEqualTo(39000.00);
+    }
+    @Provide
+    static Arbitrary<Double> falseTestCases() {
+        return Arbitraries.oneOf(
+                Arbitraries.doubles().greaterOrEqual(39000.01),
+                Arbitraries.doubles().lessThan(0)
+        );
+    }
+
+    @Property
+    void withdrawLessThanAmounts(@ForAll("falseTestCases") Double withdrawAmount) {
+        LibraryAccounts x = new LibraryAccounts();
+        boolean withdraw = x.withdraw(withdrawAmount);
+        assertThat(withdraw).isTrue();
+        assertThat(x.getCashBalance()).isEqualTo(39000.00);
+    }
+
+
 
     @Test
     public void withdrawTestTrue(){//simple test case where check to see that on the assumption
@@ -50,7 +73,7 @@ public class LibraryAccountsTest {
     @Test
     public void withdrawTestFalse(){
         //this is to check that if the amount is greater than the cash available it will return false
-        //and wont allow the the subtraction.
+        //and won't allow the the subtraction.
         boolean result = libraryAccounts.withdraw(1000000);
         assertThat(libraryAccounts.getCashBalance()).isEqualTo(39000.00);//checks that the balance stays untouched if the amount withdrawn is greater than it
         assertThat(result).isEqualTo(false);//will return false on the amount is greate than cashBalance
