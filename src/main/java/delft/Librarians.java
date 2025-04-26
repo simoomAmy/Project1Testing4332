@@ -5,21 +5,22 @@ import java.util.List;
 
 public class Librarians {
     String name;
-    boolean partTime;//to be able to know whether they are full or part
-
-    //below are only applicable if the librarian is full
-    double salary;//the salary if they are fulltimeint authCode;
-    double totalSalaryWithdrawn;
     int authCode;
-    List<Book> booksBought;
-    Librarians(String name, int authCode, boolean partTime) {
+
+    // full time 
+    double salary;
+    double totalSalaryWithdrawn; 
+    List<Book> booksPurchased; 
+
+    public Librarians(String name, int authCode) {
         this.name = name;
         this.authCode = authCode;
-        this.totalSalaryWithdrawn = 0;
-        booksBought = new ArrayList<>();
-        partTime = false;
-
+        this.salary = 39000.0; 
+        this.totalSalaryWithdrawn = 0.0;
+        this.booksPurchased = new ArrayList<>();
+       
     }
+
     //get salary
     public double getSalary(){
         return salary;
@@ -31,13 +32,8 @@ public class Librarians {
     //this function is to add a book that was bought succefully to the
     //librarians booksBought list
     public void addBookToBought(Book book){
-        booksBought.add(book);
+        booksPurchased.add(book);
     }
 
-
-
-
-
-
-
 }
+

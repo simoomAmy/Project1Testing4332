@@ -1,8 +1,13 @@
 package delft;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.auth.AUTH;
 import org.junit.jupiter.api.*;
 
 class MainTesting {
@@ -14,7 +19,8 @@ class MainTesting {
     // --- helper definitions for dynamic input strings ---
     private static final String EXIT_CODE = "0\n";
     private static final String AUTH_PASS = "123456\n";
-    private static final String AUTH_FAIL = "23051425\n";
+    private static final String AUTH_FAIL = "999999\n";
+    private static final String AUTH_VOLUNTEER = "654321\n";
     private static final String BOOK_SUBMENU = "1\n";
     private static final String MEMBER_SUBMENU = "2\n";
     private static final String FIND_BOOK_INFORMATION = "1\n";
@@ -59,7 +65,7 @@ class MainTesting {
     @Test
     void testAddBookFunction() {
         // user input
-        String simulatedInput = AUTH_PASS + BOOK_SUBMENU + ADD_BOOK + "Dinosaurs\nMr Dino Man\n2012\n9752\n40\nSci-Fi\n4\n" + EXIT_CODE; 
+        String simulatedInput = AUTH_PASS + BOOK_SUBMENU + ADD_BOOK + "Dinosaurs\nMr Dino Man\n2012\n9752\n40\nSci-Fi\n4\n" + BOOK_SUBMENU + VIEW_CATALOG + EXIT_CODE; 
         System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
 
         // main function call
@@ -230,7 +236,7 @@ class MainTesting {
         String MEMBER_ID = "1\n"; // ID of the member returning the book
         
         // user input
-        String simulatedInput = AUTH_PASS + BOOK_SUBMENU + CHECKOUT_BOOK + MEMBER_ID + BOOK_ID + EXIT_CODE; 
+        String simulatedInput = AUTH_PASS + BOOK_SUBMENU + CHECKOUT_BOOK + MEMBER_ID + BOOK_ID + BOOK_SUBMENU + VIEW_CATALOG + EXIT_CODE; 
         System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
 
 
@@ -242,7 +248,7 @@ class MainTesting {
 
         // verifies output contains expected
         assertThat(output).contains("Book: Book 2 checked out successfully to: Jacob");
-        assertThat(output).contains("Book 2 ID: 2");
+        assertThat(output).contains("Book 2 (ID: 2)");
         assertThat(output).doesNotContain("Book not found.");
     }
 
@@ -250,7 +256,9 @@ class MainTesting {
     @Test
     void testingCheckingOutWithoutBook() {
         // user input
-        String simulatedInput = "2\n1\n345\n10\n0\n"; 
+        String FAKE_BOOK_ID = "345\n"; // ID of the book to be checked out
+        String MEMBER_ID = "1\n"; // ID of the member returning the book
+        String simulatedInput = AUTH_PASS + BOOK_SUBMENU + CHECKOUT_BOOK + MEMBER_ID + FAKE_BOOK_ID + EXIT_CODE; // tries to check out a book that doesn't exist
         System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
 
 
@@ -295,7 +303,7 @@ class MainTesting {
         String EMAIL = "eshapi@cox.net\n"; // Email of the new member
         String ID = "10\n"; // ID of the new member
         // user input
-        String simulatedInput = AUTH_PASS + MEMBER_SUBMENU + ADD_MEMBER + NAME + EMAIL + ID + MEMBER_SUBMENU + REMOVE_MEMBER + ID + EXIT_CODE; // adds new member then removes member
+        String simulatedInput = AUTH_PASS + MEMBER_SUBMENU + ADD_MEMBER + NAME + EMAIL + ID + MEMBER_SUBMENU + REMOVE_MEMBER + AUTH_PASS+ ID + EXIT_CODE; // adds new member then removes the member
         System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
 
 
@@ -312,55 +320,13 @@ class MainTesting {
 
 
     // ---------- Test Written in Proj2 ----------
-    
-    // Test to make sure that a Librarian in the system can access the CLI
-    @Test
-    void authorizeLibrarianPass() {
-
-        // user input
-        String simulatedInput = AUTH_PASS + EXIT_CODE; // Authorizes Librarian, then exits
-        System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
-
-        // main function call
-        Main.main(new String[]{});
-
-        // captures output
-        String output = outputStream.toString();
-
-        // verifies output contains expected
-        assertThat(output).contains("Insert Auth Code: ");
-        assertThat(output).contains("Access Granted.");
-        assertThat(output).contains("=== Library Management CLI ===");
-        assertThat(output).doesNotContain("Auth Code Not Found. Access Denied.");
-        
-    }
-
-    // Test to make sure that soneone without the proper authcode cannot access the CLI
-    @Test
-    void authorizeLibrarianFail() {
-
-        // user input
-        String simulatedInput = AUTH_FAIL + AUTH_FAIL + AUTH_FAIL; // Authorization Failed
-        System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
-
-        // main function call
-        Main.main(new String[]{});
-
-        // captures output
-        String output = outputStream.toString();
-
-        // verifies output contains expected
-        assertThat(output).contains("Insert Auth Code: ");
-        assertThat(output).contains("Auth Code Not Found. Access Denied.");
-        assertThat(output).contains("Too many failed attempts. Exiting program.");
-    }
 
     // Test to make sure that you can access CLI if accidentally enter the wrong code once
     @Test
     void authorizeLibrarianPassAfterIncorrectCode() {
 
         // user input
-        String simulatedInput = AUTH_FAIL + AUTH_PASS + EXIT_CODE; 
+        String simulatedInput = LIBRARY_SUBMENU + AUTH_FAIL + AUTH_PASS + EXIT_CODE; 
         System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
 
         // main function call
@@ -376,12 +342,12 @@ class MainTesting {
         assertThat(output).doesNotContain("Too many failed attempts. Exiting program.");
     }
 
-    // Test to Check Library Submenu Is accessible
+    // Test to Check Library Submenu Is accessible with fulltime authCode
     @Test
-    void librarySubmenuCheck() {
+    void librarySubmenuCheckWithAuthCode() {
 
         // user input
-        String simulatedInput = AUTH_PASS + LIBRARY_SUBMENU + EXIT_CODE; 
+        String simulatedInput =LIBRARY_SUBMENU + AUTH_PASS + EXIT_CODE; 
         System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
 
         // main function call
@@ -391,7 +357,27 @@ class MainTesting {
         String output = outputStream.toString();
 
         // verifies output contains expected
-        assertThat(output).contains("=== Library Submenu ===");
+        assertThat(output).contains("=== Librarian Submenu ===");
         
     }
+    // Test to Check Library Submenu Is accessible without fulltime authCode
+    @Test
+    void librarySubmenuCheckWithoutAuthCode() {
+
+        // user input
+        String simulatedInput = AUTH_PASS + LIBRARY_SUBMENU + AUTH_FAIL + AUTH_FAIL + AUTH_FAIL; 
+        System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
+
+        // main function call
+        Main.main(new String[]{});
+
+        // captures output
+        String output = outputStream.toString();
+
+        // verifies output contains expected
+        assertThat(output).doesNotContain("=== Librarian Submenu ===");
+        assertThat(output).contains("Too many failed attempts. Exiting program.");
+        
+    }
+  
 }

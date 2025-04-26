@@ -19,9 +19,9 @@ public class Main {
         // ---- Librarian Setup ---- 
 
         // Making Librarians
-        Librarians librarianOne = new Librarians("Jacob", 123456, false);
-        Librarians librarianTwo = new Librarians("Tyler", 654321, false);
-        Librarians librarianThree = new Librarians("Dennis", 456789, false);
+        Librarians librarianOne = new Librarians("Jacob", 123456);
+        Librarians librarianTwo = new Librarians("Tyler", 234567);
+        Librarians librarianThree = new Librarians("Dennis", 456789);
 
         // Adding librarians To A List
         List<Librarians> librarianList = new ArrayList<>(List.of(librarianOne, librarianTwo, librarianThree));
@@ -36,14 +36,6 @@ public class Main {
         Library library = new Library(availableBookIds, allBooks, loanedBookIds, members);
 
         boolean running = true; // bool for CLI running
-
-            // calls the authorization method to authorize user
-            // if returns false, the CLI wont continue to run
-            if (authorizeLibrarian(librarianList, scanner) == false)
-            {
-                running = false; 
-            }
-        
         
         while (running) {
 
@@ -53,6 +45,7 @@ public class Main {
             System.out.println("=== Library Management CLI ===");
             System.out.println("1. Book Submenu");
             System.out.println("2. Member Submenu");
+            System.out.println("3. Library Submenu");
             System.out.println("0. Exit");
             System.out.print("Select an option: ");
         
@@ -315,6 +308,14 @@ public class Main {
                         
                         // Remove Member
                         case "2":
+
+                            double authCode = authorizeLibrarian(librarianList, scanner);
+
+                            if (authCode == 0) {
+                                System.out.println("Exiting Library Management CLI.");
+                                running = false;
+                                break;
+                            }
                             System.out.print("Enter member ID to remove: ");
                             int memberIdToRemove = Integer.parseInt(scanner.nextLine());
                             Member memberToRemove = null;
@@ -361,16 +362,20 @@ public class Main {
                                             System.out.print("Please input the new Name: \n");
                                             String newName = scanner.nextLine();
                                             m.updateMemberInfo(option, newName);
+                                            break;
                                         case 2:
                                             System.out.print("Please input the new Email: \n");
                                             String newEmail = scanner.nextLine();
                                             m.updateMemberInfo(option, newEmail);
+                                            break;
                                         case 3:
                                             System.out.print("Please input the new MemberID: \n");
                                             String intNum = scanner.nextLine();
                                             m.updateMemberInfo(option,intNum);
+                                            break;
                                         default:
                                             System.out.println("Invalid option");
+                                            break;
 
                                     }
 
@@ -379,12 +384,21 @@ public class Main {
                                 break;
                     // default member submenu
                     default:
-                    System.out.println("Invalid option. Please try again.");
-                        
+                        System.out.println("Invalid option. Please try again.");
                 }
+                break;
                 
                 case "3":
                     clearScreen();
+                    
+                    double authCode = authorizeLibrarian(librarianList, scanner);
+
+                    if (authCode == 0) {
+                        System.out.println("Exiting Library Management CLI.");
+                        running = false;
+                        break;
+                    }
+                    
                     System.out.println("=== Librarian Submenu ===");
                     System.out.println("1. Add Volunteer Librarian");
                     System.out.println("2. Add Donation");
@@ -426,6 +440,7 @@ public class Main {
                     System.out.println("Invalid option. Please try again.");
             }
         }
+        
         scanner.close();
     }
 
@@ -447,7 +462,7 @@ public class Main {
     }
 
     // function that authorizes the FT Librarian 
-    public static boolean authorizeLibrarian( List<Librarians> librarianList, Scanner scanner) {
+    public static double authorizeLibrarian( List<Librarians> librarianList, Scanner scanner) {
      
         int inputCount = 0; // initalizes inputCount to 0
 
@@ -456,7 +471,7 @@ public class Main {
 
         System.out.println("Insert Auth Code: ");
         
-        int authCode = 0; // initalizes authCode to 0
+        int authCode = 0; // initializes authCode to 0
        
         // input handler
         try {
@@ -470,7 +485,7 @@ public class Main {
         for (Librarians librarian : librarianList) {    
             if (librarian.authCode == authCode) {
                 System.out.println("Access Granted.");
-                return true;
+                return authCode;
             }
         }
         
@@ -481,9 +496,11 @@ public class Main {
         // if inputCount is 3, exit the program
         if (inputCount >= 3) {
             System.out.println("Too many failed attempts. Exiting program.");
-            return false; // exit the program
+            return 0; // exit the program
     }
-}
-}
+    }
+    }
+
+    
 }
 
