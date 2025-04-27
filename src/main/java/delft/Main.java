@@ -163,8 +163,7 @@ public class Main {
                                             break;
                                         }
                                         
-                                        LibraryAccounts libraryAccounts = new LibraryAccounts();
-                                        boolean purchased = libraryAccounts.orderNewBook();
+                                        boolean purchased = accounting.orderNewBook();
 
                                         if (purchased) {
                                             System.out.println("Book purchased successfully! Please enter the details for the new book:");
@@ -472,12 +471,19 @@ public class Main {
 
                         case "1":
                             clearScreen();
-                            // impliment volunteer adding functionality 
+                           //add volunteer
                             break;
                         
                         case "2":
                             clearScreen();
-                            // impliment donation adding functionality
+                            System.out.println("Insert Donation Amount: ");
+                            Double donation = Double.parseDouble(scanner.nextLine());
+                            if(accounting.deposit(donation)) {
+                                System.out.println("$$: Donation Successfully Deposited");
+                            }else {
+                                System.out.println("$$: XX Donation Failed, Please Insert a Positive Amount");
+                            }
+                            break;
 
                         case "3":
                             clearScreen();
@@ -486,9 +492,9 @@ public class Main {
                             System.out.println("- Total Withdrawn (Current): " + currentLibrarian.totalSalaryWithdrawn);
                             System.out.println("Confirm with Yes to Withdraw Walary:");
                             String amount = scanner.nextLine();
-                            if(amount.toLowerCase().equals("yes")){
+                            if(amount.equalsIgnoreCase("yes")){
                                 if(accounting.withdrawalSalary(currentLibrarian)){
-                                    System.out.println("$$: Salary Withdrawn");
+                                    System.out.println("$$: Salary Withdrawn for "+currentLibrarian.name);
                                 }else{
                                     System.out.println("$$: XX Insufficient Balance");
                                 }
@@ -502,8 +508,9 @@ public class Main {
                             System.out.println("Invalid option. Please try again.");
                             break;
                     }
+                    break;
                        
-                // default CLI menu 
+                // default CLI menu
                 default:
                     System.out.println("Invalid option. Please try again.");
             }
