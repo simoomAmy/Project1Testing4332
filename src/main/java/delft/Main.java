@@ -3,6 +3,7 @@
 package delft;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -19,13 +20,19 @@ public class Main {
         // ---- Librarian Setup ---- 
 
         // Making Librarians
-        Librarians librarianOne = new Librarians("Jacob", 123456);
-        Librarians librarianTwo = new Librarians("Tyler", 234567);
-        Librarians librarianThree = new Librarians("Dennis", 456789);
+        Librarians librarianOne = new Librarians("Amy Granados", 123456);
+        Librarians librarianTwo = new Librarians("Nathan Hoang", 234567);
+        Librarians librarianThree = new Librarians("Jacob Kinchen", 345678);
+        Librarians librarianFour = new Librarians("Brandon Walton", 456789);
 
-        // Adding librarians To A List
-        List<Librarians> librarianList = new ArrayList<>(List.of(librarianOne, librarianTwo, librarianThree));
+        // Adding librarians To A hashmap
+        HashMap<Integer, Librarians> librarianMap = new HashMap<>();
         
+        librarianMap.put(123456, librarianOne);
+        librarianMap.put(234567, librarianTwo);
+        librarianMap.put(345678, librarianThree);
+        librarianMap.put(456789, librarianFour);
+
         
         // list set up (can change to have more books and members etc.)
         List<Integer> availableBookIds = new ArrayList<>(List.of(1));
@@ -42,7 +49,12 @@ public class Main {
             
 
             // display menu for CLI
-            System.out.println("=== Library Management CLI ===");
+            System.out.println("=== Active Librarians ===");
+            System.out.println("- " + librarianOne.name);
+            System.out.println("- " + librarianTwo.name);
+            System.out.println("- " + librarianThree.name);
+            System.out.println("- " + librarianFour.name);
+            System.out.println("=== Options ===");
             System.out.println("1. Book Submenu");
             System.out.println("2. Member Submenu");
             System.out.println("3. Library Submenu");
@@ -309,7 +321,7 @@ public class Main {
                         // Remove Member
                         case "2":
 
-                            double authCode = authorizeLibrarian(librarianList, scanner);
+                            double authCode = authorizeLibrarian(librarianMap, scanner);
 
                             if (authCode == 0) {
                                 System.out.println("Exiting Library Management CLI.");
@@ -391,14 +403,14 @@ public class Main {
                 case "3":
                     clearScreen();
                     
-                    double authCode = authorizeLibrarian(librarianList, scanner);
-
+                    int authCode = authorizeLibrarian(librarianMap, scanner);                    
                     if (authCode == 0) {
                         System.out.println("Exiting Library Management CLI.");
                         running = false;
                         break;
                     }
-                    
+                    Librarians currentLibrarian = librarianMap.get(authCode);
+
                     System.out.println("=== Librarian Submenu ===");
                     System.out.println("1. Add Volunteer Librarian");
                     System.out.println("2. Add Donation");
@@ -426,7 +438,12 @@ public class Main {
 
                         case "3":
                             clearScreen();
-                            // impliment withdraw salary functionality 
+                            System.out.println("$$$ Finances $$$");
+                            System.out.println("- Current Salary: " + currentLibrarian.getSalary());
+                            System.out.println("- Total Withdrawn (Current): " + currentLibrarian.totalSalaryWithdrawn);
+                            System.out.println("Insert amount to withdraw: ");
+                            double amount = Double.parseDouble(scanner.nextLine());
+                            currentLibrarian.addTotalSalaryWithdrawn(amount);
                             break;
 
                         // default library submenu    
@@ -462,7 +479,7 @@ public class Main {
     }
 
     // function that authorizes the FT Librarian 
-    public static double authorizeLibrarian( List<Librarians> librarianList, Scanner scanner) {
+    public static int authorizeLibrarian(HashMap<Integer, Librarians> librarianMap, Scanner scanner) {
      
         int inputCount = 0; // initalizes inputCount to 0
 
@@ -481,13 +498,11 @@ public class Main {
             continue; 
         }
         
-        // loops through librarian list to check if authCode is valid
-        for (Librarians librarian : librarianList) {    
-            if (librarian.authCode == authCode) {
-                System.out.println("Access Granted.");
-                return authCode;
-            }
-        }
+        // Librarian look up
+        if (librarianMap.containsKey(authCode)){
+            System.out.println("Access Granted.");
+            return authCode;
+        } 
         
         // authCode not found, increment inputCount
         inputCount++;
