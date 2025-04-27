@@ -19,10 +19,8 @@ public class LibrarianTest {
     // Specification Testing: Simple test that when a librarian's salary is withdrawn (Easy)
     public void addTotalSalaryWithdrawn(){
         Librarians test = new Librarians("Brandon", 101,false);
-        double currentSalary = test.getSalary();
         test.addTotalSalaryWithdrawn(10000.0);
-        double expected = currentSalary - 10000.0;
-        assertEquals(expected, currentSalary);
+        assertEquals(10000.0, test.totalSalaryWithdrawn);
     }
 
     @Test
