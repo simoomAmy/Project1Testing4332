@@ -58,7 +58,7 @@ public class LibraryAccounts {
 //    the logic of wether the book is added to the list should be in the cli since
 //    if there is not enough money and the purchase fails it will not add it to the
 //    the catalog/list of books in library
-    public boolean orderNewBook(){//this to allow the the book be purchased
+    public boolean orderNewBook(){//this to allow the book be purchased
         double bookprice = bookPrice();//get the price of the book from purchaseNewBook
         boolean withdrawalDone = withdraw(bookprice);//this will go throught the process of the withdraw to see if the balance is enough to purchase the book
         return withdrawalDone;//returns if the book was bought or not

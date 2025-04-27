@@ -43,7 +43,7 @@ public class Main {
         Library library = new Library(availableBookIds, allBooks, loanedBookIds, members);
 
         boolean running = true; // bool for CLI running
-        
+        LibraryAccounts accounting = new LibraryAccounts();
         while (running) {
 
             
@@ -412,6 +412,7 @@ public class Main {
                     Librarians currentLibrarian = librarianMap.get(authCode);
 
                     System.out.println("=== Librarian Submenu ===");
+                    System.out.println("Librarian Logged In: "+ currentLibrarian.name);
                     System.out.println("1. Add Volunteer Librarian");
                     System.out.println("2. Add Donation");
                     System.out.println("3. Withdraw Salary");
@@ -441,9 +442,17 @@ public class Main {
                             System.out.println("$$$ Finances $$$");
                             System.out.println("- Current Salary: " + currentLibrarian.getSalary());
                             System.out.println("- Total Withdrawn (Current): " + currentLibrarian.totalSalaryWithdrawn);
-                            System.out.println("Insert amount to withdraw: ");
-                            double amount = Double.parseDouble(scanner.nextLine());
-                            currentLibrarian.addTotalSalaryWithdrawn(amount);
+                            System.out.println("Confirm with Yes to Withdraw Walary:");
+                            String amount = scanner.nextLine();
+                            if(amount.toLowerCase().equals("yes")){
+                                if(accounting.withdrawalSalary(currentLibrarian)){
+                                    System.out.println("$$: Salary Withdrawn");
+                                }else{
+                                    System.out.println("$$: XX Insufficient Balance");
+                                }
+                            }else{
+                                System.out.println("Invalid Option, Please try again.");
+                            }
                             break;
 
                         // default library submenu    
@@ -518,4 +527,5 @@ public class Main {
 
     
 }
+////withdraw
 
