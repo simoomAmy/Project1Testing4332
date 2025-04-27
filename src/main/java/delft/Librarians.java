@@ -37,7 +37,6 @@ public class Librarians {
     //this it to add the salary withdrawn to the total salary withdrawn
     public void addTotalSalaryWithdrawn(double salary){
         totalSalaryWithdrawn += salary;
-        this.salary -= salary; //Amy- this seems to not follow the idea of Librarian as LibraryAccounts is the one that should edit any amounts of the accounts
     }
     //this function is to add a book that was bought succefully to the
     //librarians booksBought list
