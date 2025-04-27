@@ -140,15 +140,56 @@ public class Main {
                                         break;
                                     }
                                 }
-        
-                                //if book exist and can be checked out, check it out
-                                if (bookToCheckout != null) {
+                                   //if book exist and can be checked out, check it out
+                                   if (bookToCheckout != null) {
                                     library.checkoutBook(checkoutMember, bookIdToCheckout);
                                     clearScreen();
                                     System.out.println("Book: " + bookToCheckout.name + " checked out successfully to: " + checkoutMember.name);
-                                } else {
-                                    System.out.println("Book not found.");
+                                    } 
+                                else if (bookToCheckout == null) {
+                                    System.out.println("The book you are trying to checkout isn't in the library.");
+                                    System.out.println("Would you like to purchase it? (Y/N)");
+                                    String purchase = scanner.nextLine();
+                                    if (purchase.equalsIgnoreCase("Y")) {
+                                        System.out.println("Only Full Time Librarians can purchase books.");
+                                        System.out.println("Please provide the Auth Code of a Full Time Librarian: ");
+                                        
+                                        int authCode = authorizeLibrarian(librarianMap, scanner); // Changed return type to int
+
+                                        if (authCode == 0) { // Check against int 0
+                                            System.out.println("Exiting Library Management CLI.");
+                                            running = false;
+                                            break;
+                                        }
+                                        
+                                        LibraryAccounts libraryAccounts = new LibraryAccounts();
+                                        boolean purchased = libraryAccounts.orderNewBook();
+
+                                        if (purchased) {
+                                            System.out.println("Book purchased successfully! Please enter the details for the new book:");
+                                            System.out.print("Enter book name: ");
+                                            String name = scanner.nextLine();
+                                            System.out.print("Enter author: ");
+                                            String author = scanner.nextLine();
+                                            System.out.print("Enter publication year: ");
+                                            int year = Integer.parseInt(scanner.nextLine());
+                                            System.out.print("Enter ISBN: ");
+                                            String isbn = scanner.nextLine();
+                                            int bookID = bookIdToCheckout;
+                                            boolean isBookAvailable = true; // New books are available
+                                            System.out.print("Enter genre: ");
+                                            String genre = scanner.nextLine();
+                                            
+                                            Book newBook = new Book(name, author, year, isbn, bookID, isBookAvailable, genre);
+                                            library.addBook(newBook); // Add the new book to the library
+                                            System.out.println("Book '" + name + "' added to the library catalog.");
+                                        } else {
+                                            System.out.println("Purchase failed. Insufficient funds in the library account.");
+                                        }
+
+                                    } 
                                 }
+                             
                             } else {
                                 System.out.println("Member not found.");
                             }
@@ -321,7 +362,7 @@ public class Main {
                         // Remove Member
                         case "2":
 
-                            double authCode = authorizeLibrarian(librarianMap, scanner);
+                            int authCode = authorizeLibrarian(librarianMap, scanner);
 
                             if (authCode == 0) {
                                 System.out.println("Exiting Library Management CLI.");
@@ -488,7 +529,7 @@ public class Main {
     }
 
     // function that authorizes the FT Librarian 
-    public static int authorizeLibrarian(HashMap<Integer, Librarians> librarianMap, Scanner scanner) {
+    public static int authorizeLibrarian(HashMap<Integer, Librarians> librarianMap, Scanner scanner) { // Changed return type to int
      
         int inputCount = 0; // initalizes inputCount to 0
 
@@ -509,18 +550,24 @@ public class Main {
         
         // Librarian look up
         if (librarianMap.containsKey(authCode)){
-            System.out.println("Access Granted.");
-            return authCode;
+            // Check if the librarian is NOT a volunteer (i.e., full-time)
+            if (!librarianMap.get(authCode).isVolunteer) {
+                 System.out.println("Access Granted.");
+                 return authCode; // Return the int auth code
+            } else {
+                 System.out.println("Volunteer librarians cannot perform this action.");
+                 // Optionally loop back or handle differently
+            }
         } 
         
-        // authCode not found, increment inputCount
+        // authCode not found or volunteer, increment inputCount
         inputCount++;
-        System.out.println("Auth Code Not Found. Access Denied.");
+        System.out.println("Auth Code Not Found or Invalid Permissions. Access Denied.");
         
         // if inputCount is 3, exit the program
         if (inputCount >= 3) {
             System.out.println("Too many failed attempts. Exiting program.");
-            return 0; // exit the program
+            return 0; // Return 0 to indicate failure/exit
     }
     }
     }
