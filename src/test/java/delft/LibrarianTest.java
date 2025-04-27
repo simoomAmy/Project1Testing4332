@@ -1,6 +1,8 @@
 package delft;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.*;
 
 public class LibrarianTest {
@@ -23,6 +25,19 @@ public class LibrarianTest {
         assertEquals(expected, currentSalary);
     }
 
+    @Test
+    // Specification Testing: Simple test to see if it adds a book that was bought succefully book list
+    void testAddBookToBought() {
+        Librarians librarian = new Librarians("Brandon", 101, false);
+        Book book = new Book("Bought Book", "Author", 2025, "ISBN3", 1, true, "Fiction");
+
+        assertNotNull(librarian.booksPurchased);
+        assertTrue(librarian.booksPurchased.isEmpty());
+
+        librarian.addBookToBought(book);
+
+        assertEquals(1, librarian.booksPurchased.size());
+    }
 
   
 
