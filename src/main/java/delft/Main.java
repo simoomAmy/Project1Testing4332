@@ -20,10 +20,10 @@ public class Main {
         // ---- Librarian Setup ---- 
 
         // Making Librarians
-        Librarians librarianOne = new Librarians("Amy Granados", 123456);
-        Librarians librarianTwo = new Librarians("Nathan Hoang", 234567);
-        Librarians librarianThree = new Librarians("Jacob Kinchen", 345678);
-        Librarians librarianFour = new Librarians("Brandon Walton", 456789);
+        Librarians librarianOne = new Librarians("Amy Granados", 123456, false);
+        Librarians librarianTwo = new Librarians("Nathan Hoang", 234567, false);
+        Librarians librarianThree = new Librarians("Jacob Kinchen", 345678, false);
+        Librarians librarianFour = new Librarians("Brandon Walton", 456789, false);
 
         // Adding librarians To A hashmap
         HashMap<Integer, Librarians> librarianMap = new HashMap<>();
