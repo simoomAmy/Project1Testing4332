@@ -146,6 +146,7 @@ public class Main {
                                     clearScreen();
                                     System.out.println("Book: " + bookToCheckout.name + " checked out successfully to: " + checkoutMember.name);
                                     } 
+                                    // purchasing book
                                 else if (bookToCheckout == null) {
                                     System.out.println("The book you are trying to checkout isn't in the library.");
                                     System.out.println("Would you like to purchase it? (Y/N)");
@@ -154,9 +155,9 @@ public class Main {
                                         System.out.println("Only Full Time Librarians can purchase books.");
                                         System.out.println("Please provide the Auth Code of a Full Time Librarian: ");
                                         
-                                        int authCode = authorizeLibrarian(librarianMap, scanner); // Changed return type to int
+                                        double authCode = authorizeLibrarian(librarianMap, scanner); 
 
-                                        if (authCode == 0) { // Check against int 0
+                                        if (authCode == 0) { 
                                             System.out.println("Exiting Library Management CLI.");
                                             running = false;
                                             break;

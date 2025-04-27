@@ -254,27 +254,6 @@ class MainTesting {
 
     // Unit Test
     @Test
-    void testingCheckingOutWithPurchasing() {
-        // user input
-        String FAKE_BOOK_ID = "345\n"; // ID of the book to be checked out
-        String MEMBER_ID = "1\n"; // ID of the member returning the book
-        String simulatedInput = BOOK_SUBMENU + CHECKOUT_BOOK + MEMBER_ID + FAKE_BOOK_ID + "Y\n" + AUTH_PASS + "Book Name\n" + "Author\n" + "2013\n" + "1256623467\n" + "Genre\n" + BOOK_SUBMENU + VIEW_CATALOG + EXIT_CODE; // tries to check out a book that doesn't exist
-        System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
-
-
-        // main function call
-        Main.main(new String[]{});
-
-        // captures output
-        String output = outputStream.toString();
-
-        // verifies output contains expected
-        assertThat(output).contains("Book 'Book Name' added to the library catalog.");
-        assertThat(output).contains("Book Name (ID: 345)");
-    }
-
-    // Unit Test
-    @Test
     void testingAddMember() {
         // user input
         String NAME = "Emily\n"; // Name of the new member
@@ -377,6 +356,27 @@ class MainTesting {
         assertThat(output).doesNotContain("=== Librarian Submenu ===");
         assertThat(output).contains("Too many failed attempts. Exiting program.");
         
+    }
+
+    // Unit Test
+    @Test
+    void testingCheckingOutWithPurchasing() {
+        // user input
+        String FAKE_BOOK_ID = "345\n"; // ID of the book to be checked out
+        String MEMBER_ID = "1\n"; // ID of the member returning the book
+        String simulatedInput = BOOK_SUBMENU + CHECKOUT_BOOK + MEMBER_ID + FAKE_BOOK_ID + "Y\n" + AUTH_PASS + "Book Name\n" + "Author\n" + "2013\n" + "1256623467\n" + "Genre\n" + BOOK_SUBMENU + VIEW_CATALOG + EXIT_CODE; // tries to check out a book that doesn't exist
+        System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
+
+
+        // main function call
+        Main.main(new String[]{});
+
+        // captures output
+        String output = outputStream.toString();
+
+        // verifies output contains expected
+        assertThat(output).contains("Book 'Book Name' added to the library catalog.");
+        assertThat(output).contains("Book Name (ID: 345)");
     }
   
 }
